@@ -1,3 +1,3 @@
 # To Do Wild
 
-An offline PWA app exercise by [yuptogun](https://yuptogun).
+An offline PWA exercise by [yuptogun](https://yuptogun).

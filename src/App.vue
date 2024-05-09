@@ -1,13 +1,24 @@
+<script setup lang="ts">
+import Todo from './components/Todo.vue';
+</script>
+
 <template>
   <div class="container mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 my-5">
-      <div>
-        <h1 class="text-2xl my-3">To Do Wild</h1>
-        <p>An offline PWA app exercise by <a href="htps://yuptogun.com" target="_blank" class="text-gray-600 hover:text-gray-400 underline underline-offset-4">yuptogun</a>.</p>
+    <div class="flex flex-col mt-0 px-5 lg:flex-row lg:my-5 lg:gap-5">
+      <div class="mt-5 lg:my-5 lg:pe-5 lg:max-w-96">
+        <a href="/">
+          <img src="/icon-192.png" class="inline me-3 lg:block lg:me-0 mb-3 w-full max-w-10 md:max-w-20" alt="To Do Wild" />
+          <strong>To Do Wild</strong>
+        </a>
+        <span class="hidden md:inline">: a to-do web app that (supposedly) works off the grid.</span>
       </div>
-      <div>
-        foobar
-      </div>
+      <main class="mt-0 lg:my-3 w-100 lg:grow lg:shrink-0">
+        <Todo />
+      </main>
     </div>
+    <footer class="my-5 text-center text-gray-400 text-sm">
+      &copy; 2024~ by <a href="//yuptogun.com" target="_blank" class="text-gray-400 hover:text-gray-600 underline underline-offset-4">yuptogun</a> &middot; <a href="//github.com/RandomMaerks/Overused-Grotesk" target="_blank" rel="noopener noreferrer"
+          class="underline underline-offset-4 text-gray-400 hover:text-gray-600">Overused Grotesk</a> by RandomMaerks
+    </footer>
   </div>
 </template>
