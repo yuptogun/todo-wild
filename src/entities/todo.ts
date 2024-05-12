@@ -13,4 +13,20 @@ export default class Todo {
     return this.status === TodoStatus.Undone
         || this.status === TodoStatus.Done
   }
+
+  isDone() {
+    return this.status === TodoStatus.Done
+  }
+
+  markDone() {
+    this.status = TodoStatus.Done
+  }
+
+  markUndone() {
+    this.status = TodoStatus.Undone
+  }
+
+  archive() {
+    this.status = TodoStatus.Archived
+  }
 }

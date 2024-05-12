@@ -7,6 +7,11 @@ const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward y
 const getRandom = function (items: string[]) {
   return items[Math.floor(Math.random() * items.length)]
 }
+const markTodo = (todo: Todo, event) => {
+  event.target.checked
+    ? todo.markDone()
+    : todo.markUndone()
+}
 
 const todoList = defineModel()
 
@@ -17,18 +22,27 @@ const needsInspiration = computed(() => todoList.value.length !== 0 && allDone.v
 
 <template>
   <div>
-    <p v-if="allDone" class="text-center text-lg m-5">
+    <div v-if="allDone" class="text-center text-lg m-5 py-5">
       <span v-if="needsInspiration">
-        you've got nothing else to do <a :href="getRandom(inspirations)" target="_blank" class="text-gray-700 hover:text-gray-600">{{ getRandom(suggestions) }}</a>
+        guess you're ready. <a :href="getRandom(inspirations)" target="_blank" class="text-gray-700 hover:text-gray-600">{{ getRandom(suggestions) }}</a>
       </span>
-      <span v-else>you've got nothing else to do.</span>
-    </p>
+      <span v-else class="py-5">make a checklist here.</span>
+    </div>
     <ul v-else>
       <li v-for="todo in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
-        <label class="block w-full">
-          <input type="checkbox" class="form-checkbox rounded me-2" :checked="todo.status === 'done'" />
-          {{ todo.todo }}
-        </label>
+        <div class="flex">
+          <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() }">
+            <input type="checkbox" class="form-checkbox rounded mx-3" :checked="todo.isDone()" @change="markTodo(todo, $event)" />{{ todo.todo }}
+          </label>
+          <div class="shrink">
+            <div class="flex items-center gap-2">
+              <button v-if="todo.isDone()" type="button"
+                class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400" @click="todo.archive()">archive</button>
+              <button v-else type="button"
+                class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400">edit</button>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
   </div>
