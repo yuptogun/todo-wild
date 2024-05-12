@@ -16,9 +16,5 @@ import Todo from './components/Todo.vue';
         <Todo />
       </main>
     </div>
-    <footer class="my-5 text-center text-gray-400 text-sm">
-      &copy; 2024~ by <a href="//yuptogun.com" target="_blank" class="text-gray-400 hover:text-gray-600 underline underline-offset-4">yuptogun</a> &middot; <a href="//github.com/RandomMaerks/Overused-Grotesk" target="_blank" rel="noopener noreferrer"
-          class="underline underline-offset-4 text-gray-400 hover:text-gray-600">Overused Grotesk</a> by RandomMaerks
-    </footer>
   </div>
 </template>
