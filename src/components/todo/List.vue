@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import Todo from '../../entities/todo'
+import Item from './Item.vue';
 
 const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/ko/bible/1/EXO.4.12']
 const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
@@ -29,20 +30,8 @@ const needsInspiration = computed(() => todoList.value.length !== 0 && allDone.v
       <span v-else class="py-5">make a checklist here.</span>
     </div>
     <ul v-else>
-      <li v-for="todo in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
-        <div class="flex">
-          <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() }">
-            <input type="checkbox" class="form-checkbox rounded mx-3" :checked="todo.isDone()" @change="markTodo(todo, $event)" />{{ todo.todo }}
-          </label>
-          <div class="shrink">
-            <div class="flex items-center gap-2">
-              <button v-if="todo.isDone()" type="button"
-                class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400" @click="todo.archive()">archive</button>
-              <button v-else type="button"
-                class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400">edit</button>
-            </div>
-          </div>
-        </div>
+      <li v-for="(todo, i) in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
+        <Item v-model="openTodos[i]"></Item>
       </li>
     </ul>
   </div>
