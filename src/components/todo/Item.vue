@@ -20,8 +20,8 @@ const markTodo = (todo: Todo, event) => {
   <div v-if="isEditing()">
     <form class="flex items-center" @submit.prevent="stopEditing()">
       <div class="grow">
-        <div class="me-3 w-100">
-          <input type="text" class="w-100 form-input rounded w-full" required
+        <div class="w-full pe-3">
+          <input type="text" class="w-full form-input rounded" required
             :placeholder="todo.todo"
             v-model="todo.todo" />
         </div>
