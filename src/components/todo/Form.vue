@@ -31,8 +31,12 @@ const addTodo = () => {
 <template>
   <form v-on:submit.prevent="addTodo">
     <div class="flex pb-3 gap-3">
-      <input type="text" v-model.trim="todoInput" class="form-input w-100 rounded flex-grow" placeholder="what needs to be done?" required />
-      <button type="submit" class="bg-gray-800 text-white rounded px-5 py-3 disabled:bg-gray-200 disabled:text-gray-400" :disabled="cannotAddTodo">add</button>
+      <div class="grow">
+        <input type="text" v-model.trim="todoInput" class="w-100 form-input rounded w-full" placeholder="what needs to be done?" required />
+      </div>
+      <div class="shrink">
+        <button type="submit" class="rounded px-4 py-2 bg-gray-800 text-white disabled:bg-gray-200 disabled:text-gray-400" :disabled="cannotAddTodo">add</button>
+      </div>
     </div>
   </form>
 </template>
