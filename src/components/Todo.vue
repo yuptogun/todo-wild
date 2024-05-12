@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { openDB } from 'idb';
-import { onBeforeMount, reactive, ref } from 'vue';
-import { plainToInstance } from 'class-transformer';
-import Form from './todo/Form.vue';
-import List from './todo/List.vue';
-import Todo from '../entities/todo';
+import { ref } from 'vue'
+import Form from './todo/Form.vue'
+import List from './todo/List.vue'
 
 const todoList = ref([])
 
 // onBeforeMount(async () => {
-//   const dbVersion = 1;
-//   const db = await openDB('todo-wild', dbVersion);
-//   todoList.value = (await db.getAll('todos')).map((t) => plainToInstance(Todo, t));
+//   const dbVersion = 1
+//   const db = await openDB('todo-wild', dbVersion)
+//   todoList.value = (await db.getAll('todos')).map((t) => plainToInstance(Todo, t))
 // })
 </script>
 

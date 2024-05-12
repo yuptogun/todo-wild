@@ -2,16 +2,24 @@
 import { plainToInstance } from 'class-transformer'
 import { computed, ref } from 'vue'
 import Todo from '../../entities/todo'
-import { TodoStatus } from '../../enums/TodoStatus';
+import { TodoStatus } from '../../enums/TodoStatus'
 
-const todoList = defineModel({ type: Array })
+const todoList = defineModel()
 
 const todoInput = ref('')
 const cannotAddTodo = computed(() => !todoInput.value.length)
+const getNewTodoID = () => {
+  let ids = todoList.value?.flatMap((t: Todo) => t.id)
+  if (ids.length === 0) {
+    ids = [0]
+  }
+  return Math.max(...ids) + 1
+}
 
 const addTodo = () => {
   // 여기쯤에 indexed db 삽입 루틴 추가 필요
   const newTodoItem = plainToInstance(Todo, {
+    id: getNewTodoID(),
     todo: todoInput.value,
     status: TodoStatus.Undone,
   })

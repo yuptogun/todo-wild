@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import Todo from '../../entities/todo'
-import { TodoStatus } from '../../enums/TodoStatus'
-import { plainToInstance } from 'class-transformer'
 
 const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/ko/bible/1/EXO.4.12']
 const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
@@ -10,8 +8,7 @@ const getRandom = function (items: string[]) {
   return items[Math.floor(Math.random() * items.length)]
 }
 
-const todoList: { value: Todo[]; } = defineModel()
-// console.log(todoList.value)
+const todoList = defineModel()
 
 const openTodos = computed(() => todoList.value.filter((t: Todo) => t.isOpen()))
 const allDone = computed(() => openTodos.value.length === 0)
