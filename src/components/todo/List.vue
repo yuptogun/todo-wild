@@ -8,17 +8,16 @@ const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward y
 const getRandom = function (items: string[]) {
   return items[Math.floor(Math.random() * items.length)]
 }
-const markTodo = (todo: Todo, event) => {
-  event.target.checked
-    ? todo.markDone()
-    : todo.markUndone()
-}
 
 const todoList = defineModel()
 
 const openTodos = computed(() => todoList.value.filter((t: Todo) => t.isOpen()))
 const allDone = computed(() => openTodos.value.length === 0)
 const needsInspiration = computed(() => todoList.value.length !== 0 && allDone.value)
+
+const deleteTodo = (id: number) => {
+  todoList.value = todoList.value.filter((t: Todo) => t.id !== id)
+}
 </script>
 
 <template>
@@ -31,7 +30,7 @@ const needsInspiration = computed(() => todoList.value.length !== 0 && allDone.v
     </div>
     <ul v-else>
       <li v-for="(todo, i) in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
-        <Item v-model="openTodos[i]"></Item>
+        <Item v-model="openTodos[i]" @delete-todo="(id: number) => deleteTodo(id)"></Item>
       </li>
     </ul>
   </div>

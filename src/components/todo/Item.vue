@@ -2,12 +2,13 @@
 import { ref } from 'vue'
 import Todo from '../../entities/todo'
 
+const emit = defineEmits(['deleteTodo'])
 const todo = defineModel({ required: true })
 const mode = ref('show')
 
-const isEditing = () => mode.value === 'edit';
-const startEditing = () => mode.value = 'edit';
-const stopEditing = () => mode.value = 'show';
+const isEditing = () => mode.value === 'edit'
+const startEditing = () => mode.value = 'edit'
+const stopEditing = () => mode.value = 'show'
 
 const markTodo = (todo: Todo, event) => {
   event.target.checked
@@ -43,11 +44,17 @@ const markTodo = (todo: Todo, event) => {
       </label>
       <div class="shrink">
         <div class="flex items-center gap-2">
-          <button v-if="todo.isDone()" type="button"
-            class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400"
-            @click="todo.archive()">archive</button>
-          <button v-else type="button" @click="startEditing()"
-            class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400">edit</button>
+          <div v-if="todo.isDone()">
+            <button  type="button"
+              class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400"
+              @click="todo.archive()">archive</button>
+          </div>
+          <div v-else class="flex gap-2">
+            <button type="button" @click="$emit('deleteTodo', todo.id)"
+              class="rounded px-2 py-1 text-white text-sm bg-red-500 hover:bg-red-400">delete</button>
+            <button type="button" @click="startEditing()"
+              class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400">edit</button>
+          </div>
         </div>
       </div>
     </div>
