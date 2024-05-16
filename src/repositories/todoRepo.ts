@@ -25,16 +25,16 @@ export default class TodoRepo {
 
   async create(dto: Create) {
     const db = await this.getDB()
-    db.add(storeName, instanceToPlain(dto))
+    return db.add(storeName, instanceToPlain(dto))
   }
 
   async update(todo: Todo) {
     const db = await this.getDB()
-    db.put(storeName, instanceToPlain(todo), `${todo.id}`)
+    return db.put(storeName, instanceToPlain(todo), todo.id)
   }
 
   async delete(todo: Todo) {
     const db = await this.getDB()
-    db.delete(storeName, `${todo.id}`)
+    return db.delete(storeName, todo.id)
   }
 }

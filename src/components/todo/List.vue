@@ -3,6 +3,8 @@ import { computed, ref } from 'vue'
 import Todo from '../../entities/todo'
 import Item from './Item.vue';
 
+const emit = defineEmits(['deleteTodo'])
+
 const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/ko/bible/1/EXO.4.12']
 const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
 const introductions = [`list what you'd need in the wilderness.`, `before you go wild, you need...`, `let's make a wild checklist shall we?`]
@@ -15,10 +17,6 @@ const todoList = defineModel()
 const openTodos = computed(() => todoList.value.filter((t: Todo) => t.isOpen()))
 const allDone = computed(() => openTodos.value.length === 0)
 const needsInspiration = computed(() => todoList.value.length !== 0 && allDone.value)
-
-const deleteTodo = (id: number) => {
-  todoList.value = todoList.value.filter((t: Todo) => t.id !== id)
-}
 </script>
 
 <template>
@@ -31,7 +29,7 @@ const deleteTodo = (id: number) => {
     </div>
     <ul v-else>
       <li v-for="(todo, i) in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
-        <Item v-model="openTodos[i]" @delete-todo="(id: number) => deleteTodo(id)"></Item>
+        <Item v-model="openTodos[i]" @delete-todo="$emit('deleteTodo', todo)"></Item>
       </li>
     </ul>
   </div>

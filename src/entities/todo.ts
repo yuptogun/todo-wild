@@ -1,7 +1,7 @@
 import { TodoStatus } from "../enums/TodoStatus";
 
 export default class Todo {
-  id: null|number
+  id: number
   todo: string
   status: TodoStatus
 
