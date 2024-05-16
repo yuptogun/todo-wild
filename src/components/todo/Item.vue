@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import Todo from '../../entities/todo'
 
-const emit = defineEmits(['deleteTodo'])
+const emit = defineEmits(['deleteTodo', 'editTodo'])
 const todo = defineModel({ required: true })
 const mode = ref('show')
 
@@ -10,16 +10,20 @@ const isEditing = () => mode.value === 'edit'
 const startEditing = () => mode.value = 'edit'
 const stopEditing = () => mode.value = 'show'
 
+const edit = () => {
+  emit('editTodo', todo)
+  stopEditing()
+}
+
 const markTodo = (todo: Todo, event) => {
-  event.target.checked
-    ? todo.markDone()
-    : todo.markUndone()
+  event.target.checked ? todo.markDone() : todo.markUndone()
+  emit('editTodo', todo)
 }
 </script>
 
 <template>
   <div v-if="isEditing()">
-    <form class="flex items-center" @submit.prevent="stopEditing()">
+    <form class="flex items-center" @submit.prevent="edit()">
       <div class="grow">
         <div class="w-full pe-3">
           <input type="text" class="w-full form-input rounded" required
@@ -39,8 +43,11 @@ const markTodo = (todo: Todo, event) => {
   <div v-else>
     <div class="flex">
       <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() }">
-        <input type="checkbox" class="form-checkbox rounded mx-3" :checked="todo.isDone()"
-          @change="markTodo(todo, $event)" />{{ todo.todo }}
+        <div class="flex items-start gap-3 h-full">
+          <input type="checkbox" class="form-checkbox rounded mt-1" :checked="todo.isDone()"
+            @change="markTodo(todo, $event)" />
+          <div class="break-all me-3">{{ todo.todo }}</div>
+        </div>
       </label>
       <div class="shrink">
         <div class="flex items-center gap-2">
