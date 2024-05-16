@@ -14,7 +14,7 @@ import Todo from './components/Todo.vue';
             </a>
             <span class="hidden md:inline">: a to-do web app that (supposedly) works off the grid.</span>
           </div>
-          <main class="mt-0 lg:my-3 w-100 lg:grow lg:shrink-0">
+          <main class="mt-0 lg:my-3 w-100 lg:grow">
             <Todo />
           </main>
         </div>
