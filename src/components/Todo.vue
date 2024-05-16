@@ -33,6 +33,7 @@ const archiveAllSelected = () => {
   todos.value.forEach((t: Todo) => {
     if (t.isDone()) {
       t.archive()
+      editTodo(t)
     }
   })
 }

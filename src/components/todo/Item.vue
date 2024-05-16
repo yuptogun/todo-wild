@@ -16,9 +16,8 @@ const edit = () => {
 }
 
 const markTodo = (todo: Todo, event) => {
-  event.target.checked
-    ? todo.markDone()
-    : todo.markUndone()
+  event.target.checked ? todo.markDone() : todo.markUndone()
+  emit('editTodo', todo)
 }
 </script>
 
