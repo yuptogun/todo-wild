@@ -2,13 +2,18 @@
 import { ref } from 'vue'
 import Todo from '../../entities/todo'
 
-const emit = defineEmits(['deleteTodo'])
+const emit = defineEmits(['deleteTodo', 'editTodo'])
 const todo = defineModel({ required: true })
 const mode = ref('show')
 
 const isEditing = () => mode.value === 'edit'
 const startEditing = () => mode.value = 'edit'
 const stopEditing = () => mode.value = 'show'
+
+const edit = () => {
+  emit('editTodo', todo)
+  stopEditing()
+}
 
 const markTodo = (todo: Todo, event) => {
   event.target.checked
@@ -19,7 +24,7 @@ const markTodo = (todo: Todo, event) => {
 
 <template>
   <div v-if="isEditing()">
-    <form class="flex items-center" @submit.prevent="stopEditing()">
+    <form class="flex items-center" @submit.prevent="edit()">
       <div class="grow">
         <div class="w-full pe-3">
           <input type="text" class="w-full form-input rounded" required

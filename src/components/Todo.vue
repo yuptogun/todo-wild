@@ -25,6 +25,10 @@ const deleteTodo = async (todo: Todo) => {
   return await repo.delete(todo)
     .then(() => getTodos())
 }
+const editTodo = async (todo: Todo) => {
+  return await repo.update(todo)
+    .then(() => getTodos())
+}
 const archiveAllSelected = () => {
   todos.value.forEach((t: Todo) => {
     if (t.isDone()) {
@@ -45,7 +49,8 @@ onBeforeMount(async () => await getTodos())
     </div>
     <List class="w-full"
       v-model="todoList"
-      @delete-todo="(todo: Todo) => deleteTodo(todo)"></List>
+      @delete-todo="(todo: Todo) => deleteTodo(todo)"
+      @edit-todo="(todo: Todo) => editTodo(todo)"></List>
     <div class="mt-5 sticky bottom-0 bg-gradient-to-t from-white from-90% to-transparent py-3 pt-5"
       v-if="anyDoneTodos"><!-- to be moved into buttons -->
       <div class="flex gap-3 justify-between">

@@ -30,7 +30,7 @@ export default class TodoRepo {
 
   async update(todo: Todo) {
     const db = await this.getDB()
-    return db.put(storeName, instanceToPlain(todo), todo.id)
+    return db.put(storeName, instanceToPlain(todo))
   }
 
   async delete(todo: Todo) {
