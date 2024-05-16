@@ -5,6 +5,7 @@ import Item from './Item.vue';
 
 const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/ko/bible/1/EXO.4.12']
 const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
+const introductions = [`list what you'd need in the wilderness.`, `before you go wild, you need...`, `let's make a wild checklist shall we?`]
 const getRandom = function (items: string[]) {
   return items[Math.floor(Math.random() * items.length)]
 }
@@ -26,7 +27,7 @@ const deleteTodo = (id: number) => {
       <span v-if="needsInspiration">
         guess you're ready. <a :href="getRandom(inspirations)" target="_blank" class="text-gray-700 hover:text-gray-600">{{ getRandom(suggestions) }}</a>
       </span>
-      <span v-else class="py-5">make a checklist here.</span>
+      <span v-else class="py-5">{{ getRandom(introductions) }}</span>
     </div>
     <ul v-else>
       <li v-for="(todo, i) in openTodos" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
