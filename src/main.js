@@ -3,7 +3,7 @@ import App from './App.vue'
 import IndexedDB from './plugins/IndexedDB'
 import './style.css'
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(IndexedDB);
-app.mount('#app');
+app.use(IndexedDB)
+app.mount('#app')

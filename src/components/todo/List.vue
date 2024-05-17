@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import Todo from '../../entities/todo'
 import Item from './Item.vue';
 
-const emit = defineEmits(['deleteTodo', 'editTodo', 'changeTodoStatus'])
+const emit = defineEmits(['deleteTodo', 'editTodo'])
 
 // const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/bible/1/EXO.4.12']
 // const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
