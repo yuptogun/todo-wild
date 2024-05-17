@@ -19,6 +19,10 @@ const markTodo = (todo: Todo, event) => {
   event.target.checked ? todo.markDone() : todo.markUndone()
   emit('editTodo', todo)
 }
+const archiveTodo = (todo: Todo) => {
+  todo.archive()
+  emit('editTodo', todo)
+}
 </script>
 
 <template>
@@ -54,7 +58,7 @@ const markTodo = (todo: Todo, event) => {
           <div v-if="todo.isDone()">
             <button type="button"
               class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400 focus-visible:outline-offset-2 focus-visible:outline-slate-400"
-              @click="todo.archive()">archive</button>
+              @click="archiveTodo(todo)">archive</button>
           </div>
           <div v-else class="flex gap-2">
             <button type="button" @click="$emit('deleteTodo', todo.id)"
