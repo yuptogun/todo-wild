@@ -56,7 +56,7 @@ onBeforeMount(async () => await getTodos())
       v-if="anyDoneTodos"><!-- to be moved into buttons -->
       <div class="flex gap-3 justify-between">
         <div>
-          <button type="button" class="text-sm px-2 py-1 rounded text-slate-700 bg-slate-100 hover:bg-slate-200"
+          <button type="button" class="text-sm px-2 py-1 rounded text-slate-700 bg-slate-100 hover:bg-slate-200 focus-visible:outline-offset-2 focus-visible:outline-slate-200"
             @click="archiveAllSelected">archive all selected</button>
         </div>
         <!-- <div>

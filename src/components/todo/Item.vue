@@ -35,7 +35,7 @@ const markTodo = (todo: Todo, event) => {
         <div class="flex items-center gap-2">
           <button type="submit"
             :disabled="todo.todo.trim() === ''"
-            class="rounded px-2 py-1 text-sm text-white bg-gray-600 hover:bg-gray-700 disabled:bg-gray-200 disabled:text-gray-400">save</button>
+            class="rounded px-2 py-1 text-sm text-white bg-gray-600 hover:bg-gray-700 disabled:bg-gray-200 disabled:text-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-700">save</button>
         </div>
       </div>
     </form>
@@ -52,15 +52,15 @@ const markTodo = (todo: Todo, event) => {
       <div class="shrink">
         <div class="flex items-center gap-2">
           <div v-if="todo.isDone()">
-            <button  type="button"
-              class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400"
+            <button type="button"
+              class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400 focus-visible:outline-offset-2 focus-visible:outline-slate-400"
               @click="todo.archive()">archive</button>
           </div>
           <div v-else class="flex gap-2">
             <button type="button" @click="$emit('deleteTodo', todo.id)"
-              class="rounded px-2 py-1 text-white text-sm bg-red-500 hover:bg-red-400">delete</button>
+              class="rounded px-2 py-1 text-white text-sm bg-red-500 hover:bg-red-400 focus-visible:outline-offset-2 focus-visible:outline-red-400">delete</button>
             <button type="button" @click="startEditing()"
-              class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400">edit</button>
+              class="rounded px-2 py-1 text-white text-sm bg-gray-500 hover:bg-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-400">edit</button>
           </div>
         </div>
       </div>
