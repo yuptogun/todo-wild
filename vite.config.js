@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      injectRegister: 'script-defer',
+      injectRegister: 'script',
       registerType: 'autoUpdate',
       includeAssets: ["/favicon.ico", "/icon-192.png", "/icon-512.png", "/icon-192-maskable.png", "/icon-512-maskable.png"],
       manifest: {
@@ -30,6 +30,7 @@ export default defineConfig({
         "orientation": "portrait-primary"
       },
       workbox: {
+        skipWaiting: true,
         globPatterns: ['**/*.{js,css,html,ico,woff2,png,svg}']
       }
     }),

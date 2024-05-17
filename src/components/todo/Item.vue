@@ -30,7 +30,7 @@ const archiveTodo = (todo: Todo) => {
     <form class="flex items-center" @submit.prevent="edit()">
       <div class="grow">
         <div class="w-full pe-3">
-          <input type="text" class="w-full form-input rounded" required
+          <input type="text" class="w-full form-input rounded" :id="`editTodoInput${todo.id}`" required
             :placeholder="todo.todo"
             v-model="todo.todo" />
         </div>
@@ -48,7 +48,7 @@ const archiveTodo = (todo: Todo) => {
     <div class="flex">
       <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() }">
         <div class="flex items-start gap-3 h-full">
-          <input type="checkbox" class="form-checkbox rounded mt-1" :checked="todo.isDone()"
+          <input type="checkbox" class="form-checkbox rounded mt-1" :checked="todo.isDone()" :id="`checkTodo${todo.id}`"
             @change="markTodo(todo, $event)" />
           <div class="break-all me-3">{{ todo.todo }}</div>
         </div>
