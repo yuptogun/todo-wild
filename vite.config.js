@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: ["/favicon.ico", "/icon-192.png", "/icon-512.png", "/icon-192-maskable.png", "/icon-512-maskable.png"],
       manifest: {
         "short_name": "To Do Wild",
-        "name": "To Do Wild: offline todo app",
+        "name": "To Do Wild",
         "description": "An offline PWA exercise by yuptogun.",
         "icons": [
           { "src": "/favicon.ico", "type": "image/x-icon", "sizes": "32x32" },
