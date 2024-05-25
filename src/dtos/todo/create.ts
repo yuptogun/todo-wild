@@ -1,4 +1,4 @@
-import { TodoStatus } from "../../enums/TodoStatus";
+import TodoStatus from "../../enums/TodoStatus"
 
 export default class Create {
   todo: string

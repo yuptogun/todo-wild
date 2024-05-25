@@ -23,6 +23,10 @@ const archiveTodo = (todo: Todo) => {
   todo.archive()
   emit('editTodo', todo)
 }
+const reopenTodo = (todo: Todo) => {
+  todo.markUndone()
+  emit('editTodo', todo)
+}
 </script>
 
 <template>
@@ -46,9 +50,12 @@ const archiveTodo = (todo: Todo) => {
   </div>
   <div v-else>
     <div class="flex">
-      <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() }">
+      <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() || todo.isClosed() }">
         <div class="flex items-start gap-3 h-full">
-          <input type="checkbox" class="form-checkbox rounded mt-1" :checked="todo.isDone()" :id="`checkTodo${todo.id}`"
+          <input type="checkbox" class="form-checkbox rounded mt-1"
+            :id="`checkTodo${todo.id}`"
+            :checked="todo.isDone() || todo.isClosed()"
+            :disabled="todo.isClosed()"
             @change="markTodo(todo, $event)" />
           <div class="break-all me-3">{{ todo.todo }}</div>
         </div>
@@ -59,6 +66,11 @@ const archiveTodo = (todo: Todo) => {
             <button type="button"
               class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400 focus-visible:outline-offset-2 focus-visible:outline-slate-400"
               @click="archiveTodo(todo)">archive</button>
+          </div>
+          <div v-else-if="todo.isClosed()">
+            <button type="button"
+              class="rounded px-2 py-1 text-white text-sm bg-slate-500 hover:bg-slate-400 focus-visible:outline-offset-2 focus-visible:outline-slate-400"
+              @click="reopenTodo(todo)">reopen</button>
           </div>
           <div v-else class="flex gap-2">
             <button type="button" @click="$emit('deleteTodo', todo.id)"
