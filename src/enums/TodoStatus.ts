@@ -1,5 +1,6 @@
-export enum TodoStatus {
+enum TodoStatus {
   Undone,
   Done,
   Archived,
 }
+export default TodoStatus
