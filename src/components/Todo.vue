@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeMount, onMounted, ref } from 'vue'
-import { plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer'
 import Form from './todo/Form.vue'
 import List from './todo/List.vue'
 import Todo from '../entities/todo'
@@ -13,8 +13,9 @@ const todoListMode = ref('open')
 const todoList = computed(() => todos.value.filter(
   (t: Todo) => todoListMode.value === 'open' ? t.isOpen() : t.isClosed()
 ))
-
-const anyDoneTodos = computed(() => !! todos.value.filter((t: Todo) => t.isDone()).length)
+const anyDoneTodos = computed(() => !! todos.value.filter(
+  (t: Todo) => t.isDone()).length
+)
 
 const getTodos = async () => {
   return repo.getAll()
