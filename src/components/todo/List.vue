@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, defineModel, defineProps, onUpdated } from 'vue'
+import { computed, defineModel } from 'vue'
 import Todo from '../../entities/todo'
-import Item from './Item.vue';
+import Item from './Item.vue'
 
 const emit = defineEmits(['deleteTodo', 'editTodo'])
 const props = defineProps(['mode'])
 const todoList = defineModel()
-const todoListMode = ref(props.mode)
+// const todoListMode = props.mode
 
 // const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/bible/1/EXO.4.12']
 // const suggestions = [`why don't you go wild now?`, `now go wild.`, `now toward your wilderness.`]
-const emptyListMessage = [`list what you'd need in the wilderness.`]
+const emptyListMessages = computed(() => props.mode === 'open'
+  ? [`list what you'd need in the wilderness.`]
+  : [`no todo has been archived.`]
+)
 const getRandom = function (items: string[]) {
   return items[Math.floor(Math.random() * items.length)]
 }
@@ -27,7 +30,7 @@ const listEmpty = computed(() => todoList.value.length === 0)
         guess you're ready. <a :href="getRandom(inspirations)" target="_blank" class="text-gray-700 hover:text-gray-600">{{ getRandom(suggestions) }}</a>
       </span>
       <span v-else class="py-5"> -->
-        {{ getRandom(emptyListMessage) }}
+        {{ getRandom(emptyListMessages) }}
       <!-- </span> -->
     </div>
     <ul v-else>
