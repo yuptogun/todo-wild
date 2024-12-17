@@ -1,0 +1,8 @@
+name: to-do-wild
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - 8309:80
