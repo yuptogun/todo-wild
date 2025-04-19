@@ -8,6 +8,7 @@ export default class Todo {
   id: number
   todo: string
   status: TodoStatus
+  list_id?: number
 
   isClosed() {
     return this.isArchived()

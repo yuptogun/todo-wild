@@ -1,40 +1,69 @@
 import { openDB } from "idb"
 import { instanceToPlain } from "class-transformer"
 import Todo from "../entities/todo"
-import Create from "../dtos/todo/create"
+import List from "../entities/list"
+import CreateTodo from "../dtos/todo/create"
+import CreateList from "../dtos/list/create"
 
+const version = 2
 const dbName = 'todo-wild'
-const storeName = 'todos'
-const version = 1
+const storeTodos = 'todos'
+const storeLists = 'todo_lists'
 
 export default class TodoRepo {
   async getDB() {
     return await openDB(dbName, version, {
-      upgrade: (db) => {
-        if (!db.objectStoreNames.contains(storeName)) {
-          db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true })
+      upgrade: (db, oldVersion, newVersion, tx) => {
+        if (oldVersion < 1) {
+          db.createObjectStore(storeTodos, { keyPath: 'id', autoIncrement: true })
+        }
+        if (oldVersion < 2) {
+          db.createObjectStore(storeLists, { keyPath: 'id', autoIncrement: true })
+          tx.objectStore(storeTodos).createIndex('list_id', 'list_id')
         }
       }
     })
   }
 
-  async getAll() {
+  async getAllTodo(listID = null): Promise<Todo[]> {
     const db = await this.getDB()
-    return await db.getAll(storeName)
+    return listID === null
+      ? await db.getAll(storeTodos)
+      : await db.getAllFromIndex(storeTodos, 'list_id', listID)
   }
 
-  async create(dto: Create) {
+  async createTodo(dto: CreateTodo) {
     const db = await this.getDB()
-    return db.add(storeName, instanceToPlain(dto))
+    return db.add(storeTodos, instanceToPlain(dto))
   }
 
-  async update(todo: Todo) {
+  async updateTodo(todo: Todo) {
     const db = await this.getDB()
-    return db.put(storeName, instanceToPlain(todo))
+    return db.put(storeTodos, instanceToPlain(todo))
   }
 
-  async delete(todo: Todo) {
+  async deleteTodo(todo: Todo) {
     const db = await this.getDB()
-    return db.delete(storeName, todo.id)
+    return db.delete(storeTodos, todo.id)
+  }
+
+  async getAllList(): Promise<List[]> {
+    const db = await this.getDB()
+    return db.getAll(storeLists);
+  }
+
+  async createList(dto: CreateList) {
+    const db = await this.getDB()
+    return db.add(storeLists, instanceToPlain(dto))
+  }
+
+  async updateList(list: List) {
+    const db = await this.getDB()
+    return db.put(storeLists, instanceToPlain(list))
+  }
+
+  async deleteList(list: List) {
+    const db = await this.getDB()
+    return db.delete(storeLists, list.id.toString())
   }
 }

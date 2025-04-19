@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, defineModel } from 'vue'
+import { computed, defineModel, ModelRef } from 'vue'
 import Todo from '../../entities/todo'
 import Item from './Item.vue'
 
 const emit = defineEmits(['deleteTodo', 'editTodo'])
 const props = defineProps(['mode'])
-const todoList = defineModel()
+const todoList: ModelRef<Todo[]> = defineModel({ required: true })
 // const todoListMode = props.mode
 
 // const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/bible/1/EXO.4.12']
@@ -25,14 +25,7 @@ const listEmpty = computed(() => todoList.value.length === 0)
 
 <template>
   <div>
-    <div v-if="listEmpty" class="text-center text-lg m-5 py-5">
-      <!-- <span v-if="needsInspiration">
-        guess you're ready. <a :href="getRandom(inspirations)" target="_blank" class="text-gray-700 hover:text-gray-600">{{ getRandom(suggestions) }}</a>
-      </span>
-      <span v-else class="py-5"> -->
-        {{ getRandom(emptyListMessages) }}
-      <!-- </span> -->
-    </div>
+    <div v-if="listEmpty" class="text-center text-lg m-5 py-5" v-text="getRandom(emptyListMessages)"></div>
     <ul v-else>
       <li v-for="(todo, i) in todoList" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
         <Item v-model="todoList[i]"

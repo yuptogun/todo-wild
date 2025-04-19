@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 import Todo from '../../entities/todo'
 
 const emit = defineEmits(['deleteTodo', 'editTodo'])
-const todo = defineModel({ required: true })
+const todo: Ref<Todo> = defineModel({ required: true })
 const mode = ref('show')
 
 const isEditing = () => mode.value === 'edit'
@@ -15,8 +15,8 @@ const edit = () => {
   stopEditing()
 }
 
-const markTodo = (todo: Todo, event) => {
-  event.target.checked ? todo.markDone() : todo.markUndone()
+const markTodo = (todo: Todo, event: Event) => {
+  (event.target as HTMLInputElement).checked ? todo.markDone() : todo.markUndone()
   emit('editTodo', todo)
 }
 const archiveTodo = (todo: Todo) => {

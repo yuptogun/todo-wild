@@ -18,19 +18,19 @@ const anyDoneTodos = computed(() => !! todos.value.filter(
 )
 
 const getTodos = async () => {
-  return repo.getAll()
+  return repo.getAllTodo()
     .then((todosInDB: object[]) => todos.value = plainToInstance(Todo, todosInDB))
 }
 const addTodo = async (dto: Create) => {
-  return await repo.create(dto)
+  return await repo.createTodo(dto)
     .then(() => getTodos())
 }
 const deleteTodo = async (todo: Todo) => {
-  return await repo.delete(todo)
+  return await repo.deleteTodo(todo)
     .then(() => getTodos())
 }
 const editTodo = async (todo: Todo) => {
-  return await repo.update(todo)
+  return await repo.updateTodo(todo)
     .then(() => getTodos())
 }
 const archiveAllSelected = () => {
@@ -45,7 +45,7 @@ const setTodoListMode = (mode: 'open' | 'closed') => {
   todoListMode.value = mode
 }
 
-onBeforeMount(async () => await getTodos())
+onMounted(async () => await getTodos())
 </script>
 
 <template>
