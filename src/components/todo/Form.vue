@@ -1,25 +1,32 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { Plus } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 
-const emit = defineEmits(['addTodo'])
+const emit = defineEmits(['addTodo']);
 
-const todoInput = ref('')
-const cannotAddTodo = computed(() => !todoInput.value.length)
+const todoInput = ref('');
+const cannotAddTodo = computed(() => !todoInput.value.trim().length);
 
+const setTodoInputValue = (e: Event) => {
+  todoInput.value = (e.target as HTMLInputElement).value;
+};
 const submitTodo = () => {
-  emit('addTodo', todoInput.value)
-  todoInput.value = ''
-}
+  emit('addTodo', todoInput.value.trim());
+  todoInput.value = '';
+};
 </script>
 
 <template>
-  <form v-on:submit.prevent="submitTodo()">
-    <div class="flex pb-3 gap-3">
+  <form v-on:submit.prevent="submitTodo">
+    <div class="flex gap-3 items-center">
       <div class="grow">
-        <input type="text" id="newTodoInput" v-model.trim="todoInput" class="w-100 form-input rounded w-full" placeholder="what needs to be done?" required />
+        <input v-model="todoInput" @input="setTodoInputValue"
+          type="text" class="form-input rounded-sm w-full bg-transparent" placeholder="what needs to be done?" required />
       </div>
-      <div class="shrink">
-        <button type="submit" class="rounded px-4 py-2 bg-gray-800 text-white disabled:bg-gray-200 disabled:text-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-800" :disabled="cannotAddTodo">add</button>
+      <div>
+        <button type="submit" class="self-stretch rounded-sm px-3 py-2 bg-gray-800 text-white disabled:bg-gray-200 disabled:text-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-800" :disabled="cannotAddTodo">
+          <Plus :size="20"></Plus>
+        </button>
       </div>
     </div>
   </form>

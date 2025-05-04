@@ -25,7 +25,7 @@ export default class TodoRepo {
     })
   }
 
-  async getAllTodo(listID = null): Promise<Todo[]> {
+  async getAllTodo(listID: string|null): Promise<Todo[]> {
     const db = await this.getDB()
     return listID === null
       ? await db.getAll(storeTodos)
@@ -52,18 +52,37 @@ export default class TodoRepo {
     return db.getAll(storeLists);
   }
 
+  async getList(listID: string): Promise<List> {
+    const db = await this.getDB()
+    return db.get(storeLists, parseInt(listID));
+  }
+
   async createList(dto: CreateList) {
     const db = await this.getDB()
     return db.add(storeLists, instanceToPlain(dto))
   }
 
   async updateList(list: List) {
-    const db = await this.getDB()
-    return db.put(storeLists, instanceToPlain(list))
+    if (list.id) {
+      const db = await this.getDB()
+      return db.put(storeLists, instanceToPlain(list))
+    }
   }
 
   async deleteList(list: List) {
-    const db = await this.getDB()
-    return db.delete(storeLists, list.id.toString())
+    if (list.id) {
+      const listID = list.id;
+      const db = await this.getDB();
+      return db.getAllFromIndex(storeTodos, 'list_id', listID).then((todos: Todo[]) => {
+        const unsetList = todos.map((t) => {
+          var todo = instanceToPlain(t);
+          delete todo.list_id;
+          return db.put(storeTodos, todo);
+        });
+        return Promise.all(unsetList);
+      }).then(() => {
+        db.delete(storeLists, listID);
+      });
+    }
   }
 }

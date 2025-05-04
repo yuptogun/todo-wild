@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineModel, ModelRef } from 'vue'
+import { computed, ModelRef } from 'vue'
 import Todo from '../../entities/todo'
 import Item from './Item.vue'
 
@@ -27,7 +27,7 @@ const listEmpty = computed(() => todoList.value.length === 0)
   <div>
     <div v-if="listEmpty" class="text-center text-lg m-5 py-5" v-text="getRandom(emptyListMessages)"></div>
     <ul v-else>
-      <li v-for="(todo, i) in todoList" :key="todo.id" class="border-b border-gray-200 py-3 last:border-none">
+      <li v-for="(todo, i) in todoList" :key="todo.id" class="py-2 border-b last:border-none border-gray-200 dark:border-gray-800">
         <Item v-model="todoList[i]"
           @delete-todo="$emit('deleteTodo', todo)"
           @edit-todo="$emit('editTodo', todo)"></Item>
