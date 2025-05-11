@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { Plus } from 'lucide-vue-next';
 
 const emit = defineEmits(['addTodo']);
 

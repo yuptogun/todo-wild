@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { ChevronDown, ChevronUp, Folder, FolderCog, Plus } from 'lucide-vue-next';
+import { getLastSelectedListID, setLastSelectedListID, unsetLastSelectedListID } from '../../global/functions';
 import TodoRepo from '../../repositories/todoRepo';
 import List from '../../entities/list';
 import ListTodo from '../../dtos/list/create';
@@ -19,56 +20,66 @@ const lists = ref([] as List[]);
 const newListName = ref('');
 const isManagingLists = ref(false);
 const isSelectingList = ref(false);
-const listSelected = ref(unlisted);
+const listSelected = ref(unlisted); // default "unlisted" because default listID undefined
+const hasUserCreatedLists = computed(() => lists.value.length > 1);
 
-const getLists = () => {
-  repo.getAllList().then((l: List[]) => {
-    lists.value = [unlisted].concat(l);
+const willGetLists = () => {
+  return new Promise<void>((resolve) => {
+    repo.getAllList().then((l: List[]) => {
+      lists.value = [unlisted].concat(l);
+      resolve();
+    });
   });
 };
 const loadSelectedList = () => {
-  if (listID.value) {
-    repo.getList(listID.value.toString()).then((list) => {
-      listSelected.value = list;
-    });
-  } else {
+  if (!listID.value) {
     listSelected.value = unlisted;
+  } else {
+    repo.getList(listID.value as number).then((list) => {
+      listSelected.value = list;
+    }).catch(() => {
+      listSelected.value = unlisted;
+    });
   }
 };
 const addNewList = () => {
   repo.createList(new ListTodo(newListName.value)).then((newListID) => {
-    selectList(newListID.toString());
-    getLists();
+    newListID = parseInt(newListID.toString());
+    setLastSelectedListID(newListID);
+    willGetLists().then(() => selectList(newListID));
+    listID.value = newListID;
     isManagingLists.value = false;
     newListName.value = '';
   });
 };
-const selectList = (id?: string) => {
+const toggleListSelect = () => {
+  if (hasUserCreatedLists.value) {
+    isSelectingList.value = !isSelectingList.value;
+  }
+}
+const selectList = (id?: number) => {
   isSelectingList.value = false;
   if (id) {
-    window.localStorage.setItem('selectedListID', id);
+    setLastSelectedListID(id);
     listID.value = id;
     repo.getList(id).then((list) => listSelected.value = list);
   } else {
-    window.localStorage.removeItem('selectedListID');
+    unsetLastSelectedListID();
     listID.value = null;
     listSelected.value = unlisted;
   }
 };
 const onListDeleted = (deletedListId: Number) => {
-  if (deletedListId == listID.value) {
-    listID.value = deletedListId.toString();
-  } else {
-    init();
-    if (deletedListId == listSelected.value.id) {
-      selectList();
-    }
+  if (getLastSelectedListID() == deletedListId) {
+    unsetLastSelectedListID();
   }
+  if (listID.value == deletedListId) {
+    isManagingLists.value = false;
+    listID.value = null;
+  }
+  init();
 };
-const init = () => {
-  getLists();
-  loadSelectedList();
-};
+const init = () => willGetLists().then(() => loadSelectedList);
 
 onMounted(init);
 </script>
@@ -77,22 +88,24 @@ onMounted(init);
   <div>
     <div class="flex flex-row justify-between items-center">
       <div class="relative">
-        <button class="flex gap-x-2 px-2 py-1 items-center hover:bg-gray-100" @click="isSelectingList = !isSelectingList">
-          <Folder :size="16" class="inline"></Folder>
+        <button :class="`px-2 py-1 flex gap-x-2 items-center ` + (hasUserCreatedLists ? 'hover:bg-gray-100' : '') + (isSelectingList ? ' bg-gray-100' : '')" @click="toggleListSelect">
+          <Folder :size="16"></Folder>
           <h2 class="inline font-bold">{{ listSelected.name }}</h2>
-          <ChevronDown v-if="!isSelectingList" :size="16"></ChevronDown>
-          <ChevronUp v-else :size="16"></ChevronUp>
+          <template v-if="hasUserCreatedLists">
+            <ChevronDown :size="16" v-if="!isSelectingList"></ChevronDown>
+            <ChevronUp :size="16" v-else></ChevronUp>
+          </template>
         </button>
         <Transition>
           <ul v-if="isSelectingList && !isManagingLists"
             class="absolute top-full mt-1 border rounded shadow-md z-10 bg-white dark:bg-gray-950">
             <li v-for="l in lists" :key="`list-${l.id || 'undefined'}`"
-              @click="selectList(l.id?.toString())"
+              @click="selectList(l.id)"
               :class="`flex items-start gap-x-2 px-3 py-2 cursor-pointer hover:bg-gray-100 active:bg-gray-200 ${listID == l.id?.toString() ? 'bg-gray-200' : ''}`">
               <span class="pt-1">
                 <Folder :size="16"></Folder>
               </span>
-              <span class=" break-all w-36 max-w-36">{{ l.name }}</span>
+              <span class="break-all w-36 max-w-36">{{ l.name }}</span>
             </li>
           </ul>
         </Transition>
@@ -110,7 +123,7 @@ onMounted(init);
           <h2>manage todo lists.</h2>
           <ul class="rounded border shadow">
             <template v-for="l in lists" :key="l.id">
-              <ListItem v-if="l.id" :list="l" class="p-3 border-b" @list-edited="init" @list-deleted="onListDeleted"></ListItem>
+              <ListItem v-if="l.id" :list="l" class="p-3 border-b" @list-edited="init" @list-deleted="onListDeleted(l.id)"></ListItem>
             </template>
             <li class="p-3">
               <form @submit="addNewList" class="flex flex-row gap-3">

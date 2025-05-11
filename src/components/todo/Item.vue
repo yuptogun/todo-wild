@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue'
-import Todo from '../../entities/todo'
-import { Archive, ArchiveRestore, Pencil, Trash2 } from 'lucide-vue-next'
+import { Ref, ref } from 'vue';
+import { Archive, ArchiveRestore, Check, Pencil, Trash2 } from 'lucide-vue-next';
+import Todo from '../../entities/todo';
 
-const emit = defineEmits(['deleteTodo', 'editTodo'])
-const todo: Ref<Todo> = defineModel({ required: true })
-const mode = ref('show')
+const emit = defineEmits(['deleteTodo', 'editTodo']);
+const todo: Ref<Todo> = defineModel({ required: true });
+const mode = ref('show');
 
-const isEditing = () => mode.value === 'edit'
-const startEditing = () => mode.value = 'edit'
-const stopEditing = () => mode.value = 'show'
+const isEditing = () => mode.value === 'edit';
+const startEditing = () => mode.value = 'edit';
+const stopEditing = () => mode.value = 'show';
 
 const edit = () => {
-  emit('editTodo', todo)
-  stopEditing()
-}
+  emit('editTodo', todo);
+  stopEditing();
+};
 
 const markTodo = (todo: Todo, event: Event) => {
-  (event.target as HTMLInputElement).checked ? todo.markDone() : todo.markUndone()
-  emit('editTodo', todo)
+  (event.target as HTMLInputElement).checked ? todo.markDone() : todo.markUndone();
+  emit('editTodo', todo);
 }
 const archiveTodo = (todo: Todo) => {
-  todo.archive()
-  emit('editTodo', todo)
+  todo.archive();
+  emit('editTodo', todo);
 }
 const reopenTodo = (todo: Todo) => {
-  todo.markUndone()
-  emit('editTodo', todo)
+  todo.markUndone();
+  emit('editTodo', todo);
 }
 </script>
 
@@ -44,7 +44,9 @@ const reopenTodo = (todo: Todo) => {
         <div class="flex items-center gap-2">
           <button type="submit"
             :disabled="todo.todo.trim() === ''"
-            class="rounded-sm px-2 py-1 text-sm text-white bg-gray-600 hover:bg-gray-700 disabled:bg-gray-200 disabled:text-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-700">save</button>
+            class="rounded-sm px-2 py-1 text-sm text-white bg-gray-600 hover:bg-gray-700 disabled:bg-gray-200 disabled:text-gray-400 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
+            <Check :size="16"></Check>
+          </button>
         </div>
       </div>
     </form>

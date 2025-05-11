@@ -10,7 +10,7 @@ import ItemList from '../todo/ItemList.vue';
 
 const repo = inject<TodoRepo>('repo', new TodoRepo());
 const { listId } = defineProps<{
-  listId: null|string;
+  listId: null|number;
 }>();
 
 const list = ref<List|null>(null);
@@ -39,7 +39,7 @@ const getTodos = () => {
     .then((todosInDB: object[]) => todos.value = plainToInstance(Todo, todosInDB))
 }
 const addTodo = (todoText: string) => {
-  const dto = new Create(todoText, listId ? parseInt(listId) : undefined);
+  const dto = new Create(todoText, listId || undefined);
   repo.createTodo(dto).then(getTodos);
 };
 const deleteTodo = (todo: Todo) => {

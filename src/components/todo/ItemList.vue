@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ModelRef } from 'vue'
-import Todo from '../../entities/todo'
-import Item from './Item.vue'
+import { computed, ModelRef } from 'vue';
+import { getRandom } from '../../global/functions';
+import Todo from '../../entities/todo';
+import Item from './Item.vue';
 
-const emit = defineEmits(['deleteTodo', 'editTodo'])
-const props = defineProps(['mode'])
-const todoList: ModelRef<Todo[]> = defineModel({ required: true })
+const emit = defineEmits(['deleteTodo', 'editTodo']);
+const props = defineProps(['mode']);
+const todoList: ModelRef<Todo[]> = defineModel({ required: true });
 // const todoListMode = props.mode
 
 // const inspirations = ['https://femiwiki.com/w/GO_WILD_SPEAK_LOUD_THINK_HARD', 'https://www.bible.com/bible/1/EXO.4.12']
@@ -13,13 +14,10 @@ const todoList: ModelRef<Todo[]> = defineModel({ required: true })
 const emptyListMessages = computed(() => props.mode === 'open'
   ? [`list what you'd need in the wilderness.`]
   : [`no todo has been archived.`]
-)
-const getRandom = function (items: string[]) {
-  return items[Math.floor(Math.random() * items.length)]
-}
+);
 
 // const openTodos = computed(() => todoList.value.filter((t: Todo) => t.isOpen()))
-const listEmpty = computed(() => todoList.value.length === 0)
+const listEmpty = computed(() => todoList.value.length === 0);
 // const needsInspiration = computed(() => todoList.value.length !== 0 && listEmpty.value) // 방금 이벤트로 인해서 openTodos가 비어버렸을 경우에만 보여줘야 함. 조금 복잡하니 나중에 구현.
 </script>
 
