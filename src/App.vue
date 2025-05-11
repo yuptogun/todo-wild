@@ -11,7 +11,7 @@ import Todo from './components/Todo.vue';
           <div class="flex flex-col gap-3 mt-5 px-4 md:my-5 md:max-w-80 xl:max-w-96">
             <div class="flex flex-row items-center justify-between  md:flex-col md:items-start md:justify-normal">
               <div>
-                <img src="/icon-192.png" class="inline me-3 mb-0 md:block md:me-0 md:mb-3 w-full max-w-10 md:max-w-20" alt="To Do Wild" />
+                <img src="/icon-192.png" class="inline me-3 mb-0 md:block md:me-0 md:mb-3 w-full max-w-10 md:max-w-20 dark:brightness-90" alt="To Do Wild" />
                 <div class="inline-block text-nowrap">
                   <h1 class="font-bold inline" translate="no">To Do Wild</h1>
                   <span class="hidden md:inline">: an offline first to do app.</span>

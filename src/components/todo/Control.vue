@@ -7,6 +7,7 @@ import List from '../../entities/list';
 import TodoRepo from '../../repositories/todoRepo';
 import Form from './Form.vue';
 import ItemList from '../todo/ItemList.vue';
+import { colorsToggleButton } from '../../global/functions';
 
 const repo = inject<TodoRepo>('repo', new TodoRepo());
 const { listId } = defineProps<{
@@ -24,6 +25,7 @@ const anyDoneTodos = computed(
 );
 const archivedTodoCount = computed(() => todos.value.filter(t => t.isArchived()).length);
 const openTodoCount = computed(() => todos.value.length - archivedTodoCount.value);
+const buttonClassnames = `${colorsToggleButton} text-sm px-2 py-1 rounded-sm`;
 
 const getList = () => {
   if (listId) {
@@ -86,17 +88,15 @@ watchEffect(onLoad);
         <div class="flex gap-3 justify-between">
           <div>
             <button v-if="anyDoneTodos" @click="archiveAllSelected" type="button"
-              class="text-sm px-2 py-1 rounded-sm text-slate-700 bg-slate-100 hover:bg-slate-200 focus-visible:outline-offset-2 focus-visible:outline-slate-200">
+              :class="buttonClassnames">
               archive selected
             </button>
           </div>
           <div>
-            <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button"
-              class="text-sm px-2 py-1 rounded-sm text-slate-700 bg-slate-100 hover:bg-slate-200">
+            <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">
               see {{ archivedTodoCount.toLocaleString() }} archived
             </button>
-            <button v-else @click="setTodoListMode('open')" type="button"
-              class="text-sm px-2 py-1 rounded-sm text-slate-700 bg-slate-100 hover:bg-slate-200">
+            <button v-else @click="setTodoListMode('open')" type="button" :class="buttonClassnames">
               see {{ openTodoCount.toLocaleString() }} open
             </button>
           </div>

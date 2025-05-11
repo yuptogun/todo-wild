@@ -10,14 +10,14 @@ const closeOnClickedOutside = (e: Event) => onClickedOutside(e, modalContent, ()
 </script>
 
 <template>
-  <div class="w-full h-full bg-gray-100/75 backdrop-blur-sm fixed top-0 left-0" @click="closeOnClickedOutside">
+  <div class="w-full h-full backdrop-blur-sm fixed top-0 left-0 bg-gray-100/75 dark:bg-gray-800/75" @click="closeOnClickedOutside">
     <div class="text-end">
-      <a href="#" class="inline-block p-4 text-gray-950 hover:opacity-75" @click="emit('close')">
+      <a href="#" class="inline-block p-4 text-gray-950 dark:text-gray-100 hover:opacity-75" @click="emit('close')">
         <X></X>
       </a>
     </div>
     <div class="w-full max-w-xl mx-auto">
-      <div class="bg-white rounded-sm shadow-lg mx-4" ref="modalContent">
+      <div class="rounded-sm shadow-lg mx-4 bg-white dark:bg-black" ref="modalContent">
         <slot></slot>
       </div>
     </div>
