@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const isOffline = ref(false)
-const ampm = ref('')
-const hour = ref('')
-const minute = ref('')
+const isOffline = ref(false);
+const ampm = ref('');
+const hour = ref('');
+const minute = ref('');
 
 setInterval(() => {
   isOffline.value = !window.navigator.onLine
@@ -16,7 +16,7 @@ setInterval(() => {
     hour.value = `${hIn12 === 0 ? 12 : hIn12}`
     minute.value = `${now.getMinutes()}`.padStart(2, '0')
   }
-}, 500)
+}, 500);
 </script>
 
 <template>
