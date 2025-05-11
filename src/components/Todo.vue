@@ -8,7 +8,7 @@ const listID: Ref<null|number> = ref(getLastSelectedListID());
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-3">
+  <div class="flex flex-col">
     <ListControl v-model="listID"></ListControl>
     <TodoControl :list-id="listID"></TodoControl>
   </div>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full min-h-full">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any">
@@ -9,7 +9,7 @@
     <meta property="og:url" content="https://wild.yuptogun.com">
     <meta property="og:title" content="To Do Wild">
     <meta property="og:image" content="https://wild.yuptogun.com/icon-512.png">
-    <meta property="og:description" content="a to-do web app that (supposedly) works off the grid.">
+    <meta property="og:description" content="an offline first to do app.">
     <meta property="og:site_name" content="To Do Wild">
     <meta property="og:locale" content="en_US">
     <meta property="og:image:width" content="512">
@@ -17,12 +17,12 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="https://wild.yuptogun.com" />
     <meta name="twitter:title" content="To Do Wild" />
-    <meta name="twitter:description" content="a to-do web app that (supposedly) works off the grid." />
+    <meta name="twitter:description" content="an offline first to do app." />
     <meta name="twitter:image" content="https://wild.yuptogun.com/icon-512.png" />
     <title>To Do Wild</title>
   </head>
-  <body class="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-black dark:text-gray-400">
-    <div id="app"></div>
+  <body class="h-full min-h-full bg-white dark:bg-gray-950 text-black dark:text-gray-400">
+    <div id="app" class="h-full min-h-full"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
