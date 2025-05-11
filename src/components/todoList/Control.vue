@@ -86,7 +86,7 @@ onMounted(init);
 
 <template>
   <div>
-    <div class="flex flex-row justify-between items-center">
+    <div class="px-4 flex flex-row justify-between items-center">
       <div class="relative">
         <button :class="`px-2 py-1 flex gap-x-2 items-center ` + (hasUserCreatedLists ? 'hover:bg-gray-100' : '') + (isSelectingList ? ' bg-gray-100' : '')" @click="toggleListSelect">
           <Folder :size="16"></Folder>

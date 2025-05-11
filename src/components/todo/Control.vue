@@ -71,16 +71,18 @@ watchEffect(onLoad);
 
 <template>
   <div>
-    <div class="flex flex-col gap-y-3">
+    <div class="flex flex-col">
       <div class="sticky top-0 bg-linear-to-b from-90% to-transparent from-white dark:from-gray-950">
-        <Form @add-todo="(todo: string) => addTodo(todo)"></Form>
+        <div class="pt-4 px-4 pb-6">
+          <Form @add-todo="(todo: string) => addTodo(todo)"></Form>
+        </div>
       </div>
-      <ItemList class="w-full"
+      <ItemList class="w-full px-4"
         v-model="todoItems"
         :mode="todoItemListMode"
         @delete-todo="(todo: Todo) => deleteTodo(todo)"
         @edit-todo="(todo: Todo) => editTodo(todo)"></ItemList>
-      <div class="sticky bottom-0 mt-5 py-3 pt-5 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
+      <div class="sticky bottom-0 mt-5 pt-5 px-4 pb-3 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
         <div class="flex gap-3 justify-between">
           <div>
             <button v-if="anyDoneTodos" @click="archiveAllSelected" type="button"
