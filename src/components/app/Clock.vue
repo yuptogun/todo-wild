@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import { computed, inject, ref, Transition } from 'vue';
-import LocalStorage from '../../repositories/localStorage';
+import { computed, onMounted, ref, Transition } from 'vue';
 
-const configStorage = inject<LocalStorage>('local-storage', new LocalStorage);
+const props = defineProps<{
+  showOffline: boolean;
+  showOnline: boolean;
+}>();
+const show = computed(() => window.navigator.onLine ? props.showOnline : props.showOffline);
+const time = ref('');
 
-const hour = ref('');
-const minute = ref('');
-const ampm = ref('');
-
-const show = computed(() => {
-  const isOnline = window.navigator.onLine;
-  return isOnline
-    ? (configStorage.getItem('show_clock.online') || false)
-    : (configStorage.getItem('show_clock.offline') || true);
-});
-
-setInterval(() => {
+const setTime = () => {
+  const now = new Date();
+  const h = now.getHours();
+  const hIn12 = h % 12;
+  const hour = hIn12 === 0 ? 12 : hIn12;
+  const minute = now.getMinutes().toString().padStart(2, '0');
+  const ampm = h < 12 ? 'AM' : 'PM';
+  time.value = `${hour}:${minute} ${ampm}`;
+};
+const render = () => {
   if (show) {
-    const now = new Date();
-    const h = now.getHours();
-    const hIn12 = h % 12;
-    ampm.value = h < 12 ? 'AM' : 'PM';
-    hour.value = `${hIn12 === 0 ? 12 : hIn12}`;
-    minute.value = `${now.getMinutes()}`.padStart(2, '0');
+    setTime();
   }
-}, 500);
+};
+
+onMounted(() => {
+  render();
+});
+setInterval(render, 500);
 </script>
 
 <template>
@@ -34,7 +36,7 @@ setInterval(() => {
       leave-active-class="transition-all"
       enter-from-class="opacity-0"
       leave-to-class="opacity-0">
-      <div v-if="show && ampm">{{ hour + ':' + minute + ' ' + ampm }}</div>
+      <div v-if="show">{{ time }}</div>
     </Transition>
   </div>
 </template>

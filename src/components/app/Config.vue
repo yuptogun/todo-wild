@@ -8,8 +8,8 @@ import Clock from './Clock.vue';
 const configStorage = inject<LocalStorage>('local-storage', new LocalStorage);
 
 const isManagingApp = ref(false);
-const showClockOffline = ref(configStorage.getItem('show_clock.offline') || true);
-const showClockOnline = ref(configStorage.getItem('show_clock.online') || false);
+const showClockOffline = ref((configStorage.getItem('show_clock.offline') || true) == true);
+const showClockOnline = ref((configStorage.getItem('show_clock.online') || false) == true);
 
 watch(showClockOffline, (value) => {
   configStorage.setItem('show_clock.offline', value);
@@ -37,7 +37,7 @@ watch(showClockOnline, (value) => {
       </div>
       <div class="md:my-4 md:w-full">
         <div class="flex flex-row md:flex-row-col items-center md:justify-between gap-x-2 gap-y-1">
-          <Clock class="text-slate-700" />
+          <Clock :show-offline="showClockOffline" :show-online="showClockOnline" class="text-slate-700" />
         </div>
       </div>
     </div>
