@@ -85,4 +85,13 @@ export default class TodoRepo {
       });
     }
   }
+
+  async exportDB() {
+    const db = await this.getDB();
+    return {
+      version: db.version,
+      storeTodos: await db.getAll(storeTodos),
+      storeLists: await db.getAll(storeLists)
+    };
+  }
 }
