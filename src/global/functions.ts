@@ -1,4 +1,8 @@
 import { Ref } from "vue";
+import LocalStorage from "../repositories/localStorage";
+
+const lastSelectedListIDKey = 'selectedListID';
+const lastSelectedListIDStore = new LocalStorage();
 
 export const onClickedOutside = (e: Event, ref: Ref, onClose: Function) => {
   if (ref.value && !ref.value.contains(e.target)) {
@@ -7,14 +11,14 @@ export const onClickedOutside = (e: Event, ref: Ref, onClose: Function) => {
 };
 export const getRandom = (items: string[]) => items[Math.floor(Math.random() * items.length)];
 export const getLastSelectedListID = () => {
-  const id = window.localStorage.getItem('selectedListID');
-  return id == null ? null : parseInt(id);
+  const id = lastSelectedListIDStore.getItem(lastSelectedListIDKey);
+  return id == null ? null : parseInt(id.toString());
 };
 export const setLastSelectedListID = (listID: string|number) => {
-  window.localStorage.setItem('selectedListID', listID.toString());
+  lastSelectedListIDStore.setItem(lastSelectedListIDKey, listID.toString());
 };
 export const unsetLastSelectedListID = () => {
-  window.localStorage.removeItem('selectedListID');
+  lastSelectedListIDStore.unsetItem(lastSelectedListIDKey);
 };
 export const colorsSubmitButton =
   `bg-gray-800 text-white disabled:bg-gray-200 disabled:text-gray-400 dark:bg-gray-200 dark:text-black dark:disabled:bg-gray-700 dark:disabled:text-gray-500 focus-visible:outline-offset-2 focus-visible:outline-gray-800 `;
