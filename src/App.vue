@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Config from './components/app/Config.vue';
-import Todo from './components/Todo.vue';
+import Header from './components/app/Header.vue';
+import Main from './components/Main.vue';
 </script>
 
 <template>
@@ -9,10 +9,10 @@ import Todo from './components/Todo.vue';
       <div class="container mx-auto max-w-4xl">
         <div class="flex flex-col mt-0 gap-5 md:flex-row md:my-5">
           <div class="flex flex-col gap-3 mt-5 px-4 md:my-5 md:max-w-80 xl:max-w-96">
-            <Config class="flex flex-row items-center justify-between md:flex-col md:items-start md:justify-normal"></Config>
+            <Header class="flex flex-row items-center justify-between md:flex-col md:items-start md:justify-normal"></Header>
           </div>
           <main class="w-full mt-0 md:my-3 md:grow">
-            <Todo />
+            <Main />
           </main>
         </div>
       </div>

@@ -55,7 +55,7 @@ watch(showClockOnline, (value) => {
               <div class="flex flex-col gap-y-2">
                 <div>
                   when offline,
-                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden">
+                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
                     <label>
                       <input class="hidden peer" type="radio" v-model="showClockOffline" :value="true">
                       <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
@@ -75,7 +75,7 @@ watch(showClockOnline, (value) => {
                 </div>
                 <div>
                   when online,
-                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden">
+                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
                     <label>
                       <input class="hidden peer" type="radio" v-model="showClockOnline" :value="true">
                       <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
