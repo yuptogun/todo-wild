@@ -53,8 +53,8 @@ const reopenTodo = (todo: Todo) => {
     </form>
   </div>
   <div v-else>
-    <div class="flex items-center">
-      <label class="grow cursor-pointer" :class="{ 'line-through text-slate-400': todo.isDone() || todo.isClosed() }">
+    <div class="flex items-center gap-3">
+      <label class="grow cursor-pointer" :class="{ 'line-through text-gray-400': todo.isDone() || todo.isClosed() }">
         <div class="flex items-start gap-3 h-full">
           <input type="checkbox" class="form-checkbox bg-transparent dark:focus:ring-offset-black rounded-sm mt-1"
             :id="`checkTodo${todo.id}`"

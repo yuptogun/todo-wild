@@ -50,7 +50,7 @@ const deleteTodo = (todo: Todo) => {
 const editTodo = (todo: Todo) => {
   repo.updateTodo(todo).then(getTodos);
 };
-const archiveAllSelected = () => {
+const archiveAllDone = () => {
   todos.value.forEach((t: Todo) => {
     if (t.isDone()) {
       t.archive();
@@ -87,10 +87,12 @@ watchEffect(onLoad);
       <div class="sticky bottom-0 mt-5 pt-5 px-4 pb-3 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
         <div class="flex gap-3 justify-between">
           <div>
-            <button v-if="anyDoneTodos" @click="archiveAllSelected" type="button"
-              :class="buttonClassnames">
-              archive selected
-            </button>
+            <div v-if="todoItemListMode === 'open'">
+              <button v-if="anyDoneTodos" @click="archiveAllDone" type="button"
+                :class="buttonClassnames">
+                archive done
+              </button>
+            </div>
           </div>
           <div>
             <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">

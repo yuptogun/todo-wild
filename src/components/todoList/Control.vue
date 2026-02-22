@@ -13,7 +13,7 @@ const listID = defineModel();
 
 const unlisted: List = {
   id: undefined,
-  name: 'All',
+  name: 'Unlisted',
   deleted: false
 };
 const lists = ref([] as List[]);
@@ -37,7 +37,8 @@ const loadSelectedList = () => {
   } else {
     repo.getList(listID.value as number).then((list) => {
       listSelected.value = list;
-    }).catch(() => {
+    }).catch((e) => {
+      console.warn('failed to load selected list', e);
       listSelected.value = unlisted;
     });
   }
@@ -79,7 +80,7 @@ const onListDeleted = (deletedListId: Number) => {
   }
   init();
 };
-const init = () => willGetLists().then(() => loadSelectedList);
+const init = () => willGetLists().then(loadSelectedList);
 
 onMounted(init);
 </script>
@@ -130,20 +131,22 @@ onMounted(init);
         <Modal v-if="isManagingLists" @close="isManagingLists = false">
           <div class="p-6 flex flex-col gap-y-3">
             <h2>manage todo lists.</h2>
-            <ul class="rounded border shadow dark:border-gray-600">
-              <template v-for="l in lists" :key="l.id">
-                <ListItem v-if="l.id" :list="l" class="p-3 border-b dark:border-gray-600" @list-edited="init" @list-deleted="onListDeleted(l.id)"></ListItem>
-              </template>
-              <li class="p-3">
-                <form @submit="addNewList" class="flex flex-row gap-3">
-                  <input type="text" v-model="newListName" class="border-0 p-0 w-full focus:ring-0 bg-transparent" placeholder="new list name" required />
+            <div class="rounded border shadow dark:border-gray-600">
+              <div class="p-3 border-b dark:border-gray-600">
+                <form @submit.prevent="addNewList" class="flex flex-row gap-3">
+                  <input type="text" v-model="newListName" class="border-0 p-0 ps-1 w-full focus:ring-0 bg-transparent" placeholder="new list name" required />
                   <button type="submit" :disabled="!newListName.trim().length"
                     :class="`rounded-sm px-3 py-2 ${colorsSubmitButton}`">
                     <Plus :size="18"></Plus>
                   </button>
                 </form>
-              </li>
-            </ul>
+              </div>
+              <ul>
+                <li v-for="l in lists" :key="l.id">
+                  <ListItem v-if="l.id" :list="l" class="p-3 border-b dark:border-gray-600 last-of-type:border-0" @list-edited="init" @list-deleted="onListDeleted(l.id)"></ListItem>
+                </li>
+              </ul>
+            </div>
           </div>
         </Modal>
       </Transition>

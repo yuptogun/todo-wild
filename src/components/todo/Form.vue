@@ -24,12 +24,10 @@ const submitTodo = () => {
         <input v-model="todoInput" @input="setTodoInputValue"
           type="text" class="form-input rounded-sm w-full bg-transparent" placeholder="what needs to be done?" required />
       </div>
-      <div>
-        <button type="submit" :disabled="cannotAddTodo"
-          :class="`${colorsSubmitButton} self-stretch rounded-sm px-3 py-2`">
-          <Plus :size="20"></Plus>
-        </button>
-      </div>
+      <button type="submit" :disabled="cannotAddTodo"
+        :class="`${colorsSubmitButton} self-stretch rounded-sm px-3 py-2`">
+        <Plus :size="20"></Plus>
+      </button>
     </div>
   </form>
 </template>

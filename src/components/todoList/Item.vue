@@ -20,7 +20,7 @@ const editList = () => {
   });
 };
 const deleteList = () => {
-  const warning = `Are you sure?\n(All todos in '${list.name}' will be moved to "All" list.)`;
+  const warning = `Are you sure?\n(All todos in '${list.name}' will be moved to "Unlisted" list.)`;
   if (confirm(warning)) {
     repo.deleteList(list).then(() => {
       isEditing.value = false;
@@ -47,7 +47,7 @@ const deleteList = () => {
       </div>
     </form>
     <div v-else class="flex items-center justify-between">
-      <div class="ps-2">{{ list.name }}</div>
+      <div class="ps-1">{{ list.name }}</div>
       <div class="flex flex-row gap-x-1">
         <button type="button" @click="deleteList"
           class="rounded-sm p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900">
