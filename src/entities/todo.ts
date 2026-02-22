@@ -5,9 +5,9 @@ import TodoStatus from "../enums/TodoStatus"
  * closed = archived
  */
 export default class Todo {
-  id: number
-  todo: string
-  status: TodoStatus
+  id!: number
+  todo!: string
+  status!: TodoStatus
   list_id?: number
 
   isClosed() {
