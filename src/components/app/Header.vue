@@ -2,7 +2,7 @@
 import { inject, ref, Teleport, Transition, watch } from 'vue';
 import { Check, Settings } from 'lucide-vue-next';
 import LocalStorage from '../../repositories/localStorage';
-import Modal from '../Modal.vue';
+import Modal from '../composables/Modal.vue';
 import Clock from './Clock.vue';
 
 const configStorage = inject<LocalStorage>('local-storage', new LocalStorage);

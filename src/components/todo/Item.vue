@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
-import { Archive, ArchiveRestore, Check, Pencil, Trash2 } from 'lucide-vue-next';
+import { Archive, ArchiveRestore, Check, Ellipsis, Pencil } from 'lucide-vue-next';
 import Todo from '../../entities/todo';
 import { colorsSubmitButton } from '../../global/functions';
+import Dropdown from '../composables/Dropdown.vue';
 
 const emit = defineEmits(['deleteTodo', 'editTodo']);
 const todo: Ref<Todo> = defineModel({ required: true });
@@ -33,23 +34,19 @@ const reopenTodo = (todo: Todo) => {
 
 <template>
   <div v-if="isEditing()">
-    <form class="flex items-center" @submit.prevent="edit()">
+    <form class="flex items-center gap-3" @submit.prevent="edit()">
       <div class="grow">
-        <div class="w-full pe-3">
+        <div class="w-full">
           <input type="text" class="w-full form-input rounded-sm bg-transparent" :id="`editTodoInput${todo.id}`" required
             :placeholder="todo.todo"
             v-model="todo.todo" />
         </div>
       </div>
-      <div class="shrink">
-        <div class="flex items-center gap-2">
-          <button type="submit"
-            :disabled="todo.todo.trim() === ''"
-            :class="`${colorsSubmitButton} rounded-sm px-3 py-2 text-sm`">
-            <Check :size="16"></Check>
-          </button>
-        </div>
-      </div>
+      <button type="submit"
+        :disabled="todo.todo.trim() === ''"
+        :class="`${colorsSubmitButton} self-stretch rounded-sm px-3 py-2 text-sm`">
+        <Check :size="16"></Check>
+      </button>
     </form>
   </div>
   <div v-else>
@@ -81,14 +78,23 @@ const reopenTodo = (todo: Todo) => {
             </button>
           </template>
           <template v-else>
-            <button type="button" @click="$emit('deleteTodo', todo.id)"
-              class="rounded-sm p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900">
-              <Trash2 :size="16"></Trash2>
-            </button>
             <button type="button" @click="startEditing()"
               class="rounded-sm p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900">
               <Pencil :size="16"></Pencil>
             </button>
+            <Dropdown align-x="right" :show-chevron="false"
+              button-classnames="p-2 rounded rounded-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900"
+              @deleteTodo="$emit('deleteTodo', todo.id)">
+              <template #button>
+                <Ellipsis :size="16"></Ellipsis>
+              </template>
+              <template #dropdown>
+                <li @click="$emit('deleteTodo', todo.id)"
+                  class="text-sm px-3 py-2 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-red-900">
+                  delete
+                </li>
+              </template>
+            </Dropdown>
           </template>
         </div>
       </div>

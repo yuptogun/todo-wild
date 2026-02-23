@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref } from 'vue';
-import { ChevronDown, ChevronUp, Folder, FolderCog, Plus } from 'lucide-vue-next';
+import { computed, inject, onMounted, ref, useTemplateRef } from 'vue';
+import { Folder, FolderCog, Plus } from 'lucide-vue-next';
 import { colorsSubmitButton, getLastSelectedListID, setLastSelectedListID, unsetLastSelectedListID } from '../../global/functions';
 import TodoRepo from '../../repositories/todoRepo';
 import List from '../../entities/list';
 import ListTodo from '../../dtos/list/create';
-import Modal from '../Modal.vue';
+import Modal from '../composables/Modal.vue';
+import Dropdown from '../composables/Dropdown.vue';
 import ListItem from './Item.vue';
 
 const repo = inject<TodoRepo>('repo', new TodoRepo());
@@ -22,6 +23,7 @@ const isManagingLists = ref(false);
 const isSelectingList = ref(false);
 const listSelected = ref(unlisted); // default "unlisted" because default listID undefined
 const hasUserCreatedLists = computed(() => lists.value.length > 1);
+const todoListDropdown = useTemplateRef('todoListDropdown');
 
 const willGetLists = () => {
   return new Promise<void>((resolve) => {
@@ -69,6 +71,7 @@ const selectList = (id?: number) => {
     listID.value = null;
     listSelected.value = unlisted;
   }
+  todoListDropdown.value?.closeDropdown();
 };
 const onListDeleted = (deletedListId: Number) => {
   if (getLastSelectedListID() == deletedListId) {
@@ -88,33 +91,24 @@ onMounted(init);
 <template>
   <div>
     <div class="px-4 flex flex-row justify-between items-center">
-      <div class="relative">
-        <button :class="`px-2 py-1 flex gap-x-2 rounded items-center ` + (hasUserCreatedLists ? 'hover:bg-gray-100 dark:hover:bg-gray-800' : '') + (isSelectingList ? ' bg-gray-100 dark:bg-gray-800' : '')" @click="toggleListSelect">
+      <Dropdown
+        ref="todoListDropdown"
+        :button-classnames="`px-2 py-1 flex gap-x-2 rounded items-center ` + (hasUserCreatedLists ? 'hover:bg-gray-100 dark:hover:bg-gray-800' : '') + (isSelectingList ? ' bg-gray-100 dark:bg-gray-800' : '')">
+        <template #button>
           <Folder :size="16"></Folder>
           <h2 class="inline font-bold">{{ listSelected.name }}</h2>
-          <template v-if="hasUserCreatedLists">
-            <ChevronDown :size="16" v-if="!isSelectingList"></ChevronDown>
-            <ChevronUp :size="16" v-else></ChevronUp>
-          </template>
-        </button>
-        <Transition
-          enter-from-class="opacity-0 -translate-y-2"
-          enter-active-class="transition-all"
-          leave-active-class="transition-all"
-          leave-to-class="opacity-0 -translate-y-2">
-          <ul v-if="isSelectingList && !isManagingLists"
-            class="absolute top-full mt-1 border rounded shadow-md z-10 bg-white dark:bg-gray-950 dark:border-gray-700">
-            <li v-for="l in lists" :key="`list-${l.id || 'undefined'}`"
-              @click="selectList(l.id)"
-              :class="`flex items-start gap-x-2 px-3 py-2 cursor-pointer hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-gray-900 ${listID == l.id ? 'bg-gray-200 dark:bg-gray-800' : ''}`">
-              <span class="pt-1">
-                <Folder :size="16"></Folder>
-              </span>
-              <span class="break-all w-36 max-w-36">{{ l.name }}</span>
-            </li>
-          </ul>
-        </Transition>
-      </div>
+        </template>
+        <template #dropdown>
+          <li v-for="l in lists" :key="`list-${l.id || 'undefined'}`"
+            @click="selectList(l.id)"
+            :class="`flex items-start gap-x-2 px-3 py-2 cursor-pointer hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-gray-900 ${listID == l.id ? 'bg-gray-200 dark:bg-gray-800' : ''}`">
+            <span class="pt-1">
+              <Folder :size="16"></Folder>
+            </span>
+            <span class="break-all w-36 max-w-36">{{ l.name }}</span>
+          </li>
+        </template>
+      </Dropdown>
       <div>
         <button type="button" @click="isManagingLists = true"
           class="rounded-sm p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900">

@@ -1,14 +1,8 @@
-import { Ref } from "vue";
 import LocalStorage from "../repositories/localStorage";
 
 const lastSelectedListIDKey = 'selectedListID';
 const lastSelectedListIDStore = new LocalStorage();
 
-export const onClickedOutside = (e: Event, ref: Ref, onClose: Function) => {
-  if (ref.value && !ref.value.contains(e.target)) {
-    onClose();
-  }
-};
 export const getRandom = (items: string[]) => items[Math.floor(Math.random() * items.length)];
 export const getLastSelectedListID = () => {
   const id = lastSelectedListIDStore.getItem(lastSelectedListIDKey);

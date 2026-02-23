@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^14.2.1",
     "class-transformer": "^0.5.1",
     "idb": "^8.0.3",
     "lucide-vue-next": "^0.575.0",
