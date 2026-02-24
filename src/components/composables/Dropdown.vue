@@ -3,7 +3,7 @@ import { ref, useTemplateRef } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { ChevronDown, ChevronUp } from 'lucide-vue-next';
 
-const { buttonClassnames, alignX, showChevron } = defineProps({
+const { buttonClassnames, alignX, zIndex, showChevron } = defineProps({
   buttonClassnames: {
     type: String,
     required: false,
@@ -14,6 +14,11 @@ const { buttonClassnames, alignX, showChevron } = defineProps({
     required: false,
     default: 'left',
     validator: (value: string) => ['left', 'right'].includes(value)
+  },
+  zIndex: {
+    type: Number,
+    required: false,
+    default: 0
   },
   showChevron: {
     type: Boolean,
@@ -39,7 +44,7 @@ defineExpose({
 
 <template>
   <div class="relative" ref="dismissTarget">
-    <button :class="buttonClassnames" @click="toggleDropdown">
+    <button :class="buttonClassnames" @click="toggleDropdown" :style="`z-index: ${zIndex}`">
       <slot name="button"></slot>
       <template v-if="showChevron && $slots.dropdown">
          <ChevronUp :size="16" v-if="isDropdownOpen"></ChevronUp>
@@ -52,7 +57,8 @@ defineExpose({
       leave-active-class="transition-all"
       leave-to-class="opacity-0 -translate-y-2">
       <ul v-if="$slots.dropdown && isDropdownOpen"
-        :class="`absolute top-full mt-1 border rounded shadow-md z-10 bg-white dark:bg-gray-950 dark:border-gray-700 ${alignX === 'left' ? 'left-0' : 'right-0'}`">
+        :style="`z-index: ${zIndex + 1}`"
+        :class="`absolute top-full mt-1 border rounded shadow-md bg-white dark:bg-gray-950 dark:border-gray-700 ${alignX === 'left' ? 'left-0' : 'right-0'}`">
         <slot name="dropdown"></slot>
       </ul>
     </Transition>

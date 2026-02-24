@@ -74,7 +74,7 @@ watchEffect(onLoad);
 <template>
   <div>
     <div class="flex flex-col">
-      <div class="sticky top-0 bg-linear-to-b from-90% to-transparent from-white dark:from-gray-950">
+      <div class="sticky z-10 top-0 bg-linear-to-b from-90% to-transparent from-white dark:from-gray-950">
         <div class="pt-4 px-4 pb-6">
           <Form @add-todo="(todo: string) => addTodo(todo)"></Form>
         </div>

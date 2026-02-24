@@ -93,6 +93,7 @@ onMounted(init);
     <div class="px-4 flex flex-row justify-between items-center">
       <Dropdown
         ref="todoListDropdown"
+        :z-index="11"
         :button-classnames="`px-2 py-1 flex gap-x-2 rounded items-center ` + (hasUserCreatedLists ? 'hover:bg-gray-100 dark:hover:bg-gray-800' : '') + (isSelectingList ? ' bg-gray-100 dark:bg-gray-800' : '')">
         <template #button>
           <Folder :size="16"></Folder>

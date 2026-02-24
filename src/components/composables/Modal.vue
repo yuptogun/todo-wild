@@ -10,7 +10,7 @@ onClickOutside(dismissTarget, () => emit('close'));
 </script>
 
 <template>
-  <div class="w-full h-full backdrop-blur-sm fixed top-0 left-0 bg-gray-100/75 dark:bg-gray-800/75" ref="target">
+  <div class="w-full h-full backdrop-blur-sm fixed top-0 left-0 bg-gray-100/75 dark:bg-gray-800/75" style="z-index: 9999;">
     <div class="text-end">
       <a href="#" class="inline-block p-4 text-gray-950 dark:text-gray-100 hover:opacity-75" @click="emit('close')">
         <X></X>
