@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import { inject, ref, Teleport, Transition, watch } from 'vue';
+import { inject, Ref, ref, Teleport, Transition, watch } from 'vue';
 import { Check, Settings } from 'lucide-vue-next';
-import LocalStorage from '../../repositories/localStorage';
 import Modal from '../composables/Modal.vue';
 import Clock from './Clock.vue';
 
-const configStorage = inject<LocalStorage>('local-storage', new LocalStorage);
+const config = inject('localStorage') as Ref<{
+  show_clock: {
+    offline: boolean,
+    online: boolean
+  }
+}>;
 
 const isManagingApp = ref(false);
-const showClockOffline = ref((configStorage.getItem('show_clock.offline') || true) == true);
-const showClockOnline = ref((configStorage.getItem('show_clock.online') || false) == true);
+const showClockOffline = ref((config.value.show_clock?.offline ?? true) == true);
+const showClockOnline = ref((config.value.show_clock?.online ?? false) == true);
 
 watch(showClockOffline, (value) => {
-  configStorage.setItem('show_clock.offline', value);
+  config.value.show_clock.offline = value;
 });
 watch(showClockOnline, (value) => {
-  configStorage.setItem('show_clock.online', value);
+  config.value.show_clock.online = value;
 });
 </script>
 
@@ -41,63 +45,55 @@ watch(showClockOnline, (value) => {
         </div>
       </div>
     </div>
-    <Teleport to="body">
-      <Transition
-        enter-active-class="transition-all"
-        leave-active-class="transition-all"
-        enter-from-class="opacity-0 translate-y-2"
-        leave-to-class="opacity-0 translate-y-2">
-        <Modal v-if="isManagingApp" @close="isManagingApp = false">
-          <div class="p-6 flex flex-col gap-y-3">
-            <h2>manage this app.</h2>
-            <div class="py-2">
-              <h3 class="font-bold mb-2">clock configuration</h3>
-              <div class="flex flex-col gap-y-2">
-                <div>
-                  when offline,
-                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
-                    <label>
-                      <input class="hidden peer" type="radio" v-model="showClockOffline" :value="true">
-                      <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
-                        <Check v-if="showClockOffline" :size="12" class="inline-block"></Check>
-                        show
-                      </span>
-                    </label>
-                    <label>
-                      <input class="hidden peer" type="radio" v-model="showClockOffline" :value="false">
-                      <span class="px-2 py-1 inline-block peer-checked:text-red-700 peer-checked:bg-red-200">
-                        <Check v-if="!showClockOffline" :size="12" class="inline-block"></Check>
-                        hide
-                      </span>
-                    </label>
-                  </div>
-                  the clock.
-                </div>
-                <div>
-                  when online,
-                  <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
-                    <label>
-                      <input class="hidden peer" type="radio" v-model="showClockOnline" :value="true">
-                      <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
-                        <Check v-if="showClockOnline" :size="12" class="inline-block"></Check>
-                        show
-                      </span>
-                    </label>
-                    <label>
-                      <input class="hidden peer" type="radio" v-model="showClockOnline" :value="false">
-                      <span class="px-2 py-1 inline-block peer-checked:text-red-700 peer-checked:bg-red-200">
-                        <Check v-if="!showClockOnline" :size="12" class="inline-block"></Check>
-                        hide
-                      </span>
-                    </label>
-                  </div>
-                  the clock.
-                </div>
+    <Modal :show="isManagingApp" @close="isManagingApp = false">
+      <div class="p-6 flex flex-col gap-y-3">
+        <h2>manage this app.</h2>
+        <div class="py-2">
+          <h3 class="font-bold mb-2">clock configuration</h3>
+          <div class="flex flex-col gap-y-2">
+            <div>
+              when offline,
+              <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
+                <label>
+                  <input class="hidden peer" type="radio" v-model="showClockOffline" :value="true">
+                  <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
+                    <Check v-if="showClockOffline" :size="12" class="inline-block"></Check>
+                    show
+                  </span>
+                </label>
+                <label>
+                  <input class="hidden peer" type="radio" v-model="showClockOffline" :value="false">
+                  <span class="px-2 py-1 inline-block peer-checked:text-red-700 peer-checked:bg-red-200">
+                    <Check v-if="!showClockOffline" :size="12" class="inline-block"></Check>
+                    hide
+                  </span>
+                </label>
               </div>
+              the clock.
+            </div>
+            <div>
+              when online,
+              <div class="mx-1 inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
+                <label>
+                  <input class="hidden peer" type="radio" v-model="showClockOnline" :value="true">
+                  <span class="px-2 py-1 inline-block peer-checked:text-blue-700 peer-checked:bg-blue-200">
+                    <Check v-if="showClockOnline" :size="12" class="inline-block"></Check>
+                    show
+                  </span>
+                </label>
+                <label>
+                  <input class="hidden peer" type="radio" v-model="showClockOnline" :value="false">
+                  <span class="px-2 py-1 inline-block peer-checked:text-red-700 peer-checked:bg-red-200">
+                    <Check v-if="!showClockOnline" :size="12" class="inline-block"></Check>
+                    hide
+                  </span>
+                </label>
+              </div>
+              the clock.
             </div>
           </div>
-        </Modal>
-      </Transition>
-    </Teleport>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>

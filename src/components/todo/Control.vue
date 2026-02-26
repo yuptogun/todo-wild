@@ -10,9 +10,13 @@ import ItemList from '../todo/ItemList.vue';
 import { colorsToggleButton } from '../../global/functions';
 
 const repo = inject<TodoRepo>('repo', new TodoRepo());
-const { listId } = defineProps<{
-  listId: null|number;
-}>();
+const { listID: listID } = defineProps({
+  listID: {
+    type: Number,
+    required: true,
+    default: 0,
+  }
+});
 
 const list = ref<List|null>(null);
 const todos: { value: Todo[] } = ref([]);
@@ -28,8 +32,8 @@ const openTodoCount = computed(() => todos.value.length - archivedTodoCount.valu
 const buttonClassnames = `${colorsToggleButton} text-sm px-2 py-1 rounded-sm`;
 
 const getList = () => {
-  if (listId) {
-    repo.getList(listId).then((l) => {
+  if (listID) {
+    repo.getList(listID).then((l) => {
       list.value = l;
     });
   } else {
@@ -37,11 +41,11 @@ const getList = () => {
   }
 };
 const getTodos = () => {
-  repo.getAllTodo(listId)
+  repo.getAllTodo(listID)
     .then((todosInDB: object[]) => todos.value = plainToInstance(Todo, todosInDB))
 }
 const addTodo = (todoText: string) => {
-  const dto = new Create(todoText, listId || undefined);
+  const dto = new Create(todoText, listID || undefined);
   repo.createTodo(dto).then(getTodos);
 };
 const deleteTodo = (todo: Todo) => {

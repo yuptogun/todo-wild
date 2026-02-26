@@ -27,9 +27,9 @@ export default class TodoRepo {
 
   async getAllTodo(listID: number|null): Promise<Todo[]> {
     const db = await this.getDB();
-    return listID === null
-      ? (await db.getAll(storeTodos)).filter(t => t.list_id === undefined)
-      : await db.getAllFromIndex(storeTodos, 'list_id', listID);
+    return listID
+      ? await db.getAllFromIndex(storeTodos, 'list_id', listID)
+      : (await db.getAll(storeTodos)).filter(t => t.list_id === undefined);
   }
 
   async createTodo(dto: CreateTodo) {

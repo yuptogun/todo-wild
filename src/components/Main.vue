@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
-import { getLastSelectedListID } from '../global/functions';
+import { inject, ref, Ref } from 'vue';
 import TodoControl from './todo/Control.vue';
 import ListControl from './todoList/Control.vue';
 
-const listID: Ref<null|number> = ref(getLastSelectedListID());
+const storage = inject('localStorage') as Ref<{ selected_list_id: number }>;
+const listID: Ref<number> = ref(storage.value.selected_list_id || 0);
 </script>
 
 <template>
   <div class="flex flex-col">
     <ListControl v-model="listID"></ListControl>
-    <TodoControl :list-id="listID"></TodoControl>
+    <TodoControl :listID="listID"></TodoControl>
   </div>
 </template>

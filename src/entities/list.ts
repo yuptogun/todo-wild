@@ -1,5 +1,5 @@
 export default class List {
-  id: undefined|number
+  id!: number
   name!: string
   deleted!: boolean
 }
