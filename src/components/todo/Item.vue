@@ -3,7 +3,7 @@ import { Ref, ref } from 'vue';
 import { Archive, ArchiveRestore, Check, Ellipsis, Pencil } from 'lucide-vue-next';
 import Todo from '../../entities/todo';
 import { colorsSubmitButton } from '../../global/functions';
-import Dropdown from '../composables/Dropdown.vue';
+import SlideToggle from '../composables/transitions/SlideToggle.vue';
 
 const emit = defineEmits(['deleteTodo', 'editTodo']);
 const todo: Ref<Todo> = defineModel({ required: true });
@@ -11,11 +11,19 @@ const mode = ref('show');
 
 const isEditing = () => mode.value === 'edit';
 const startEditing = () => mode.value = 'edit';
-const stopEditing = () => mode.value = 'show';
+const isManaging = () => mode.value === 'manage';
+const toggleManage = () => {
+  if (isManaging()) {
+    showItem();
+  } else {
+    mode.value = 'manage';
+  }
+}
+const showItem = () => mode.value = 'show';
 
 const edit = () => {
   emit('editTodo', todo);
-  stopEditing();
+  showItem();
 };
 
 const markTodo = (todo: Todo, event: Event) => {
@@ -82,11 +90,14 @@ const reopenTodo = (todo: Todo) => {
               class="rounded-sm p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900">
               <Pencil :size="16"></Pencil>
             </button>
-            <Dropdown align-x="right" :show-chevron="false"
-              button-classnames="p-2 rounded rounded-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900"
+            <button type="button" @click="toggleManage()"
+             class="rounded-sm p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-900">
+             <Ellipsis :size="16"></Ellipsis>
+            </button>
+            <!-- <Dropdown align-x="right" :show-chevron="false"
+              button-classnames=""
               @deleteTodo="$emit('deleteTodo', todo.id)">
               <template #button>
-                <Ellipsis :size="16"></Ellipsis>
               </template>
               <template #dropdown>
                 <li @click="$emit('deleteTodo', todo.id)"
@@ -94,10 +105,15 @@ const reopenTodo = (todo: Todo) => {
                   delete
                 </li>
               </template>
-            </Dropdown>
+            </Dropdown> -->
           </template>
         </div>
       </div>
     </div>
+    <SlideToggle>
+      <div v-if="isManaging()" class="ps-7">
+        foo bar
+      </div>
+    </SlideToggle>
   </div>
 </template>

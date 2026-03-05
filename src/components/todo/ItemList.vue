@@ -23,9 +23,11 @@ const listEmpty = computed(() => todoList.value.length === 0);
 
 <template>
   <div>
-    <div v-if="listEmpty" class="text-center text-lg m-5 py-5" v-text="getRandom(emptyListMessages)"></div>
+    <div v-if="listEmpty" class="py-5">
+      <div class="p-5 text-center text-lg" v-text="getRandom(emptyListMessages)"></div>
+    </div>
     <ul v-else>
-      <li v-for="(todo, i) in todoList" :key="todo.id" class="py-2 border-b last:border-none border-gray-200 dark:border-gray-800">
+      <li v-for="(todo, i) in todoList" :key="todo.id" class="p-2 ps-3 border-b last:border-none border-gray-200 dark:border-gray-800">
         <Item v-model="todoList[i]"
           @delete-todo="$emit('deleteTodo', todo)"
           @edit-todo="$emit('editTodo', todo)"></Item>

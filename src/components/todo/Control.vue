@@ -77,35 +77,39 @@ watchEffect(onLoad);
 
 <template>
   <div>
-    <div class="flex flex-col">
-      <div class="sticky z-10 top-0 bg-linear-to-b from-90% to-transparent from-white dark:from-gray-950">
-        <div class="pt-4 px-4 pb-6">
+    <div class="pt-3 px-3 sticky top-0 bg-white dark:bg-gray-950">
+      <div class="rounded border rounded-b-none dark:border-gray-600">
+        <div class="p-3">
           <Form @add-todo="(todo: string) => addTodo(todo)"></Form>
         </div>
       </div>
-      <ItemList class="w-full px-4"
-        v-model="todoItems"
-        :mode="todoItemListMode"
-        @delete-todo="(todo: Todo) => deleteTodo(todo)"
-        @edit-todo="(todo: Todo) => editTodo(todo)"></ItemList>
-      <div class="sticky bottom-0 mt-5 pt-5 px-4 pb-3 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
-        <div class="flex gap-3 justify-between">
-          <div>
-            <div v-if="todoItemListMode === 'open'">
-              <button v-if="anyDoneTodos" @click="archiveAllDone" type="button"
-                :class="buttonClassnames">
-                archive done
-              </button>
-            </div>
-          </div>
-          <div>
-            <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">
-              see {{ archivedTodoCount.toLocaleString() }} archived
-            </button>
-            <button v-else @click="setTodoListMode('open')" type="button" :class="buttonClassnames">
-              see {{ openTodoCount.toLocaleString() }} open
+    </div>
+    <div class="pb-3 px-3">
+      <div class="rounded border rounded-t-none border-t-0 dark:border-gray-600">
+        <ItemList class="w-full"
+          v-model="todoItems"
+          :mode="todoItemListMode"
+          @delete-todo="(todo: Todo) => deleteTodo(todo)"
+          @edit-todo="(todo: Todo) => editTodo(todo)"></ItemList>
+      </div>
+    </div>
+    <div class="px-3 sticky bottom-0 mt-3 pt-5 pb-4 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
+      <div class="flex gap-3 justify-between">
+        <div>
+          <div v-if="todoItemListMode === 'open'">
+            <button v-if="anyDoneTodos" @click="archiveAllDone" type="button"
+              :class="buttonClassnames">
+              archive done
             </button>
           </div>
+        </div>
+        <div>
+          <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">
+            see {{ archivedTodoCount.toLocaleString() }} archived
+          </button>
+          <button v-else @click="setTodoListMode('open')" type="button" :class="buttonClassnames">
+            see {{ openTodoCount.toLocaleString() }} open
+          </button>
         </div>
       </div>
     </div>
