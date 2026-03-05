@@ -22,7 +22,7 @@ const submitTodo = () => {
     <div class="flex gap-3 items-center">
       <div class="grow">
         <input v-model="todoInput" @input="setTodoInputValue"
-          type="text" class="form-input rounded-sm w-full bg-transparent" placeholder="what needs to be done?" required />
+          type="text" class="form-input border-0 rounded-sm w-full bg-transparent p-0 ps-1 focus:ring-0" placeholder="new todo" required />
       </div>
       <button type="submit" :disabled="cannotAddTodo"
         :class="`${colorsSubmitButton} self-stretch rounded-sm px-3 py-2`">

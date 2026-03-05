@@ -25,7 +25,7 @@ watch(showClockOnline, (value) => {
 
 <template>
   <div>
-    <div class="flex flex-row items-center justify-between w-full md:flex-col md:items-start md:justify-normal">
+    <div class="flex flex-row items-center justify-between w-full md:flex-col md:items-start md:justify-normal md:ms-2">
       <div class="flex md:flex-col items-center md:items-start">
         <img src="/icon-192.png" class="inline me-3 mb-0 md:block md:me-0 md:mb-3 w-full max-w-10 md:max-w-20 dark:brightness-90" alt="To Do Wild" />
         <div class="flex items-center md:items-start gap-x-2 md:gap-x-0">
@@ -33,21 +33,21 @@ watch(showClockOnline, (value) => {
             <h1 class="font-bold inline" translate="no">To Do Wild</h1>
             <span class="hidden md:inline">: an offline first to do app.</span>
           </div>
+        </div>
+      </div>
+      <div class="md:my-4 md:w-full">
+        <div class="flex flex-row md:flex-row-col items-center md:justify-between gap-x-2 gap-y-1">
+          <Clock :show-offline="showClockOffline" :show-online="showClockOnline" class="text-slate-700" />
           <button type="button" @click="isManagingApp = true"
             class=" float-end rounded-sm p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900">
             <Settings :size="16"></Settings>
           </button>
         </div>
       </div>
-      <div class="md:my-4 md:w-full">
-        <div class="flex flex-row md:flex-row-col items-center md:justify-between gap-x-2 gap-y-1">
-          <Clock :show-offline="showClockOffline" :show-online="showClockOnline" class="text-slate-700" />
-        </div>
-      </div>
     </div>
     <Modal :show="isManagingApp" @close="isManagingApp = false">
       <div class="p-6 flex flex-col gap-y-3">
-        <h2>manage this app.</h2>
+        <h2 class="text-lg font-bold">Manage app</h2>
         <div class="py-2">
           <h3 class="font-bold mb-2">clock configuration</h3>
           <div class="flex flex-col gap-y-2">

@@ -111,11 +111,11 @@ onMounted(init);
     </div>
     <Modal :show="isManagingLists" @close="isManagingLists = false">
       <div class="p-6 flex flex-col gap-y-3">
-        <h2>manage todo lists.</h2>
+        <h2 class="text-lg font-bold">Manage lists</h2>
         <div class="rounded border shadow dark:border-gray-600">
           <div class="p-3 border-b dark:border-gray-600">
             <form @submit.prevent="onCreateList" class="flex flex-row gap-3">
-              <input type="text" v-model="newListName" class="border-0 p-0 ps-1 w-full focus:ring-0 bg-transparent" placeholder="new list name" required />
+              <input type="text" v-model="newListName" class="border-0 p-0 ps-1 w-full focus:ring-0 bg-transparent" placeholder="new list" required />
               <button type="submit" :disabled="!newListName.trim().length"
                 :class="`rounded-sm px-3 py-2 ${colorsSubmitButton}`">
                 <Plus :size="18"></Plus>
