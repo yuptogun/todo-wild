@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         "short_name": "To Do Wild",
         "name": "To Do Wild",
-        "description": "An offline PWA exercise by yuptogun.",
+        "description": "An offline PWA exercise",
         "icons": [
           { "src": "/favicon.ico", "type": "image/x-icon", "sizes": "32x32" },
           { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
