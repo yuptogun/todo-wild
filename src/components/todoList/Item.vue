@@ -20,7 +20,7 @@ const editList = () => {
   });
 };
 const deleteList = () => {
-  const warning = `Are you sure?\n(All todos in '${list.name}' will be moved to "All" list.)`;
+  const warning = `Are you sure?\n(All todos in '${list.name}' will be moved to "Unlisted" list.)`;
   if (confirm(warning)) {
     repo.deleteList(list).then(() => {
       isEditing.value = false;
@@ -36,18 +36,14 @@ const deleteList = () => {
       <div class="w-full">
         <input v-model="list.name" :placeholder="list.name" type="text" class="w-full form-input rounded-sm bg-transparent" required />
       </div>
-      <div class="shrink">
-        <div class="flex items-center gap-2">
-          <button type="submit"
-            :disabled="list.name.trim() === ''"
-            :class="`rounded px-3 py-2 text-sm ${colorsSubmitButton}`">
-            <Check :size="16"></Check>
-          </button>
-        </div>
-      </div>
+      <button type="submit"
+        :disabled="list.name.trim() === ''"
+        :class="`rounded px-3 py-2 text-sm self-stretch ${colorsSubmitButton}`">
+        <Check :size="16"></Check>
+      </button>
     </form>
     <div v-else class="flex items-center justify-between">
-      <div class="ps-2">{{ list.name }}</div>
+      <div class="ps-1">{{ list.name }}</div>
       <div class="flex flex-row gap-x-1">
         <button type="button" @click="deleteList"
           class="rounded-sm p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900">

@@ -10,9 +10,13 @@ import ItemList from '../todo/ItemList.vue';
 import { colorsToggleButton } from '../../global/functions';
 
 const repo = inject<TodoRepo>('repo', new TodoRepo());
-const { listId } = defineProps<{
-  listId: null|number;
-}>();
+const { listID: listID } = defineProps({
+  listID: {
+    type: Number,
+    required: true,
+    default: 0,
+  }
+});
 
 const list = ref<List|null>(null);
 const todos: { value: Todo[] } = ref([]);
@@ -28,8 +32,8 @@ const openTodoCount = computed(() => todos.value.length - archivedTodoCount.valu
 const buttonClassnames = `${colorsToggleButton} text-sm px-2 py-1 rounded-sm`;
 
 const getList = () => {
-  if (listId) {
-    repo.getList(listId).then((l) => {
+  if (listID) {
+    repo.getList(listID).then((l) => {
       list.value = l;
     });
   } else {
@@ -37,11 +41,11 @@ const getList = () => {
   }
 };
 const getTodos = () => {
-  repo.getAllTodo(listId)
+  repo.getAllTodo(listID)
     .then((todosInDB: object[]) => todos.value = plainToInstance(Todo, todosInDB))
 }
 const addTodo = (todoText: string) => {
-  const dto = new Create(todoText, listId || undefined);
+  const dto = new Create(todoText, listID || undefined);
   repo.createTodo(dto).then(getTodos);
 };
 const deleteTodo = (todo: Todo) => {
@@ -50,7 +54,7 @@ const deleteTodo = (todo: Todo) => {
 const editTodo = (todo: Todo) => {
   repo.updateTodo(todo).then(getTodos);
 };
-const archiveAllSelected = () => {
+const archiveAllDone = () => {
   todos.value.forEach((t: Todo) => {
     if (t.isDone()) {
       t.archive();
@@ -73,33 +77,39 @@ watchEffect(onLoad);
 
 <template>
   <div>
-    <div class="flex flex-col">
-      <div class="sticky top-0 bg-linear-to-b from-90% to-transparent from-white dark:from-gray-950">
-        <div class="pt-4 px-4 pb-6">
+    <div class="pt-3 px-3 sticky top-0 bg-white dark:bg-gray-950">
+      <div class="rounded border rounded-b-none dark:border-gray-600">
+        <div class="p-3">
           <Form @add-todo="(todo: string) => addTodo(todo)"></Form>
         </div>
       </div>
-      <ItemList class="w-full px-4"
-        v-model="todoItems"
-        :mode="todoItemListMode"
-        @delete-todo="(todo: Todo) => deleteTodo(todo)"
-        @edit-todo="(todo: Todo) => editTodo(todo)"></ItemList>
-      <div class="sticky bottom-0 mt-5 pt-5 px-4 pb-3 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
-        <div class="flex gap-3 justify-between">
-          <div>
-            <button v-if="anyDoneTodos" @click="archiveAllSelected" type="button"
+    </div>
+    <div class="pb-3 px-3">
+      <div class="rounded border rounded-t-none border-t-0 dark:border-gray-600">
+        <ItemList class="w-full"
+          v-model="todoItems"
+          :mode="todoItemListMode"
+          @delete-todo="(todo: Todo) => deleteTodo(todo)"
+          @edit-todo="(todo: Todo) => editTodo(todo)"></ItemList>
+      </div>
+    </div>
+    <div class="px-3 sticky bottom-0 mt-3 pt-5 pb-4 bg-linear-to-t from-90% to-transparent from-white dark:from-gray-950">
+      <div class="flex gap-3 justify-between">
+        <div>
+          <div v-if="todoItemListMode === 'open'">
+            <button v-if="anyDoneTodos" @click="archiveAllDone" type="button"
               :class="buttonClassnames">
-              archive selected
+              archive done
             </button>
           </div>
-          <div>
-            <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">
-              see {{ archivedTodoCount.toLocaleString() }} archived
-            </button>
-            <button v-else @click="setTodoListMode('open')" type="button" :class="buttonClassnames">
-              see {{ openTodoCount.toLocaleString() }} open
-            </button>
-          </div>
+        </div>
+        <div>
+          <button v-if="todoItemListMode !== 'closed'" @click="setTodoListMode('closed')" type="button" :class="buttonClassnames">
+            see {{ archivedTodoCount.toLocaleString() }} archived
+          </button>
+          <button v-else @click="setTodoListMode('open')" type="button" :class="buttonClassnames">
+            see {{ openTodoCount.toLocaleString() }} open
+          </button>
         </div>
       </div>
     </div>
