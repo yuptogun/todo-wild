@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { inject, Ref, ref, Teleport, Transition, watch } from 'vue';
+import { inject, Ref, ref, watch } from 'vue';
+import { useColorMode } from '@vueuse/core';
 import { Check, Settings } from 'lucide-vue-next';
 import Modal from '../composables/Modal.vue';
 import Clock from './Clock.vue';
@@ -10,7 +11,10 @@ const config = inject('localStorage') as Ref<{
     online: boolean
   }
 }>;
-
+// const { system: themeSystem, store: themeStore } = useColorMode();
+const theme = useColorMode({
+  emitAuto: true
+});
 const isManagingApp = ref(false);
 const showClockOffline = ref((config.value.show_clock?.offline ?? true) == true);
 const showClockOnline = ref((config.value.show_clock?.online ?? false) == true);
@@ -48,6 +52,34 @@ watch(showClockOnline, (value) => {
     <Modal :show="isManagingApp" @close="isManagingApp = false">
       <div class="p-6 flex flex-col gap-y-3">
         <h2 class="text-lg font-bold">Manage app</h2>
+        <div class="py-2">
+          <h3 class="font-bold mb-2">theme</h3>
+          <div>
+            <div class="inline-flex items-center border border-separate rounded shadow overflow-hidden dark:border-gray-700">
+              <label>
+                <!-- <input class="hidden peer" type="radio" v-model="themeStore" :value="'light'"> -->
+                <input class="hidden peer" type="radio" v-model="theme" :value="'light'">
+                <span class="px-2 py-1 inline-block peer-checked:text-gray-700 peer-checked:bg-gray-200 dark:peer-checked:text-gray-200 dark:peer-checked:bg-gray-700">
+                  light
+                </span>
+              </label>
+              <label>
+                <!-- <input class="hidden peer" type="radio" v-model="themeStore" :value="'auto'"> -->
+                <input class="hidden peer" type="radio" v-model="theme" :value="'auto'">
+                <span class="px-2 py-1 inline-block peer-checked:text-gray-700 peer-checked:bg-gray-200 dark:peer-checked:text-gray-200 dark:peer-checked:bg-gray-700">
+                  auto
+                </span>
+              </label>
+              <label>
+                <!-- <input class="hidden peer" type="radio" v-model="themeStore" :value="'dark'"> -->
+                <input class="hidden peer" type="radio" v-model="theme" :value="'dark'">
+                <span class="px-2 py-1 inline-block peer-checked:text-gray-700 peer-checked:bg-gray-200 dark:peer-checked:text-gray-200 dark:peer-checked:bg-gray-700">
+                  dark
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
         <div class="py-2">
           <h3 class="font-bold mb-2">clock configuration</h3>
           <div class="flex flex-col gap-y-2">
